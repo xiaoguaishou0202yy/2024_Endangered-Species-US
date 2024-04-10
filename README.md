@@ -34,6 +34,8 @@ Endangered Species in U.S.
     5. Popup: Retrieve: Show more information about the species in a area
 ### Wireframes
 ![0eb1c640018ba680e8be3389cbbaaa8](https://github.com/xiaoguaishou0202yy/2024_Endangered-Species-US/assets/158022313/626024fd-8c5e-4112-852b-2936d3fee11c)
+![IMG_6632](https://github.com/xiaoguaishou0202yy/2024_Endangered-Species-US/assets/157653332/5fd5114a-d298-4e23-a977-637c380aa1e6)
+
 
 
 
