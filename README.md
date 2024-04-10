@@ -11,7 +11,8 @@
        We are going to make an interactive map visualizing endangered animals around the world. 
 2. Requirements Document
     1. Representation
-    2. Interaction
+       1. Basemap
+    3. Interaction
 3. Wireframes
 
 
