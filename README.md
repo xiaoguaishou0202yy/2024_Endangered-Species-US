@@ -19,6 +19,7 @@
        3. Overview: Introduction and supplementary text on the background description and user guideline
        4. Legend: Use different colors to visualize habitats of species of different status and/or family
        5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
+       6. Pictures: Design the user interface and add some pictures of specific endangered species
     3. Interaction
        1. Query Panel: Filter: Status and Family. 
 3. Wireframes
