@@ -1,4 +1,4 @@
-#  Proporsal Title
+#  Proposal Title
 Endangered Species in U.S.
 
 ## Team Members
