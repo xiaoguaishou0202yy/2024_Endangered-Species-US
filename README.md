@@ -1,10 +1,10 @@
 # Team Name
 
-### Team Members
+## Team Members
 1. Zhiyi Li
 2. Xun Gong
 
-### Final Proposal
+## Final Proposal
 1. Persona/Scenario
     1. Persona
     2. Scenario
