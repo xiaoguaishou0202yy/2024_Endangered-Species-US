@@ -27,7 +27,7 @@ Endangered Species in U.S.
     5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
     6. Pictures: Design the user interface and add some pictures of specific endangered species
  3. Interaction
-    1. Introduction Panel: S
+    1. Introduction Panel: Overlay: Show intro info
     2. Query Panel: Filter: Status and Family.
     3. Chart Toggle: Overlay: Turn on/off the charts showing statistics information; Reexpress: use charts show some information including in the map 
     4. Search Widget: Search: Search for the area of interest
