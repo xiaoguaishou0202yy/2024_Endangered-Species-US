@@ -1,6 +1,6 @@
 # Team Name
 
-### Team Members
+## Team Members
 1. Zhiyi Li
 2. Xun Gong
 
