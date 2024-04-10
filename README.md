@@ -33,6 +33,8 @@ Endangered Species in U.S.
     4. Search Widget: Search: Search for the area of interest
     5. Popup: Retrieve: Show more information about the species in a area
 ### Wireframes
+![0eb1c640018ba680e8be3389cbbaaa8](https://github.com/xiaoguaishou0202yy/2024_Endangered-Species-US/assets/158022313/626024fd-8c5e-4112-852b-2936d3fee11c)
+
 
 
 
