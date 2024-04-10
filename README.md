@@ -1,4 +1,4 @@
-#  Proposal Title
+#  Project Name
 Endangered Species in U.S.
 
 ## Team Members
