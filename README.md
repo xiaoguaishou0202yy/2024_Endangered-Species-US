@@ -21,7 +21,8 @@
        5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
        6. Pictures: Design the user interface and add some pictures of specific endangered species
     3. Interaction
-       1. Query Panel: Filter: Status and Family. 
+       1. Query Panel: Filter: Status and Family.
+       2. 
 3. Wireframes
 
 
