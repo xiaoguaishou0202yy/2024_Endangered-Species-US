@@ -16,41 +16,22 @@ Endangered Species in U.S.
    Upon visiting the interactive website, the user is greeted with a vibrant array of features designed to deepen their understanding of endangered species and the efforts undertaken to conserve them. They begin by exploring the various conservation measures detailed on the site, each accompanied by rich, multimedia content that brings to light the complex processes involved in safeguarding these species. This journey through conservation strategies reveals a blend of science, policy, and community involvement, showcasing projects from habitat restoration to anti-poaching campaigns.
    As the user delves further, they discover a section dedicated to the stories behind the discovery of endangered species. These narratives, enriched with photos, videos, and firsthand accounts, offer a personal look into the lives of the animals and the dedicated individuals who study and protect them. The website facilitates a connection between the user and these distant realities, turning abstract statistics into tangible stories of survival and perseverance. By the end of their visit, the user not only gains a wealth of knowledge on the topic of conservation but also walks away with a renewed sense of responsibility and a desire to contribute to the protection of our planet’s biodiversity. This interactive experience fosters a deeper emotional engagement with environmental conservation, encouraging users to become advocates for endangered species in their own communities.
 ### Requirements Document
-    1. Representation
-       1. Basemap: The outline boundary of the United States (state boundary included): natural earth
-       2. Habitat Endangered Species: The distribution of different endangered species:
-          Environmental Conservation Online System:
-          USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
-          Current Range of All Species: https://ecos.fws.gov/ecp/species/2776          
-       3. Overview: Introduction and supplementary text on the background description and user guideline
-       4. Legend: Use different colors to visualize habitats of species of different status and/or family
-       5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
-       6. Pictures: Design the user interface and add some pictures of specific endangered species
-    3. Interaction
-       1. Query Panel: Filter: Status and Family.
-       2. 
-
-
-
-## Final Proposal
-2. Requirements Document
-    1. Representation
-       1. Basemap: The outline boundary of the United States (state boundary included): natural earth
-       2. Habitat Endangered Species: The distribution of different endangered species:
-          Environmental Conservation Online System:
-          USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
-          Current Range of All Species: https://ecos.fws.gov/ecp/species/2776          
-       3. Overview: Introduction and supplementary text on the background description and user guideline
-       4. Legend: Use different colors to visualize habitats of species of different status and/or family
-       5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
-       6. Pictures: Design the user interface and add some pictures of specific endangered species
-    3. Interaction
-       1. Introduction Panel: S
-       2. Query Panel: Filter: Status and Family.
-       3. Chart Toggle: Overlay: Turn on/off the charts showing statistics information; Reexpress: use charts show some information including in the map 
-       4. Search Widget: Search: Search for the area of interest
-       5. Popup: Retrieve: Show more information about the species in a area
-      
+ 1. Representation
+    1. Basemap: The outline boundary of the United States (state boundary included): natural earth
+    2. Habitat Endangered Species: The distribution of different endangered species:
+       Environmental Conservation Online System:
+       USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
+       Current Range of All Species: https://ecos.fws.gov/ecp/species/2776          
+    3. Overview: Introduction and supplementary text on the background description and user guideline
+    4. Legend: Use different colors to visualize habitats of species of different status and/or family
+    5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
+    6. Pictures: Design the user interface and add some pictures of specific endangered species
+ 3. Interaction
+    1. Introduction Panel: S
+    2. Query Panel: Filter: Status and Family.
+    3. Chart Toggle: Overlay: Turn on/off the charts showing statistics information; Reexpress: use charts show some information including in the map 
+    4. Search Widget: Search: Search for the area of interest
+    5. Popup: Retrieve: Show more information about the species in a area
 ### Wireframes
 
 
