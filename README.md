@@ -1,15 +1,21 @@
-# Team Name
+#  Proporsal Title
+   Endangered Species in U.S.
 
 ## Team Members
 1. Zhiyi Li
 2. Xun Gong
 
 ## Final Proposal
-1. Persona/Scenario
-    1. Persona
-    2. Scenario
-       We are going to make an interactive map visualizing endangered species in the United States. 
-2. Requirements Document
+### Target user profile (persona):
+**Name & Position:** Alex Morgan, Environmental Educator.
+**Background Description:** Alex is a passionate environmental educator who interested in endangered species protection and environmental activism. And he is preparing a public speech for a middle school focusing on the importance of biodiversity and the role of conservation efforts in protecting endangered species. By using the interactive, Alex aims to find a centralized and accurate resources for data on endangered, threatened, recovery, and extinct species across animals and plants. And to access information on species’ conservation statuses. In order to achieve his goal of contributing to and utilizing a platform that aids in raising awareness about endangered species on conservation.
+### User case scenarios: 
+**Scenario #1:**
+   Upon arriving at the interactive website, Alex can quickly find detailed, reliable information about various endangered species for lesson planning, gathering information on different species listed as endangered or critically endangered. And then, utilizing the interactive map features to show students where these species are located in U.S., highlighting the diversity of life and the ecosystems. Moreover, Alex can access the interactive to discover detailed measures and processes involved in the conservation of endangered species. He can delve into the fascinating stories behind the discovery of these vulnerable creatures, gaining insights into their natural habitats, the challenges they face, and the relentless efforts of conservationists to protect them. Evolving these stories into his speech to activate students’ interest and inspire a deeper understanding to wildlife conservation among audiences.
+**Scenario #2:**
+   Upon visiting the interactive website, the user is greeted with a vibrant array of features designed to deepen their understanding of endangered species and the efforts undertaken to conserve them. They begin by exploring the various conservation measures detailed on the site, each accompanied by rich, multimedia content that brings to light the complex processes involved in safeguarding these species. This journey through conservation strategies reveals a blend of science, policy, and community involvement, showcasing projects from habitat restoration to anti-poaching campaigns.
+   As the user delves further, they discover a section dedicated to the stories behind the discovery of endangered species. These narratives, enriched with photos, videos, and firsthand accounts, offer a personal look into the lives of the animals and the dedicated individuals who study and protect them. The website facilitates a connection between the user and these distant realities, turning abstract statistics into tangible stories of survival and perseverance. By the end of their visit, the user not only gains a wealth of knowledge on the topic of conservation but also walks away with a renewed sense of responsibility and a desire to contribute to the protection of our planet’s biodiversity. This interactive experience fosters a deeper emotional engagement with environmental conservation, encouraging users to become advocates for endangered species in their own communities.
+### Requirements Document
     1. Representation
        1. Basemap: The outline boundary of the United States (state boundary included): natural earth
        2. Habitat Endangered Species: The distribution of different endangered species:
@@ -23,7 +29,7 @@
     3. Interaction
        1. Query Panel: Filter: Status and Family.
        2. 
-3. Wireframes
+### Wireframes
 
 
 
