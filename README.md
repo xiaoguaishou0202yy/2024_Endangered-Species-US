@@ -33,7 +33,7 @@ Endangered Species in U.S.
     4. Search Widget: Search: Search for the area of interest
     5. Popup: Retrieve: Show more information about the species in a area
 
-Reference
+**Reference**
 Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533
 
 ### Wireframes
