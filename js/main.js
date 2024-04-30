@@ -1,6 +1,8 @@
 // Add all scripts to the JS folder
 
-var attrArray = ["Violent Crime", "Homicide", "Rape", "Robbery", "Ag. Assault", "Unemployment Rate (%)"];
+var attrArray = ["Grand Total","Amphibians", "Arachnids", "Birds",	"Clams", "Conifers and Cycads", "Crustaceans", "Ferns and Allies", "Fishes", "Flowering Plants", "Insects", "Lichens", "Mammals", "Reptiles", "Snails"];
+
+
 var expressed = attrArray[0]; //initial attribute
 
 //chart frame dimensions
