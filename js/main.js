@@ -18,7 +18,7 @@ var chartWidth = window.innerWidth * 0.425,
 //create a scale to size bars proportionally to frame
 var yScale = d3.scaleLinear()
    .range([670, 0])
-   .domain([80, 880]);
+   .domain([0, 500]);
 
 
 //begin script when window loads
