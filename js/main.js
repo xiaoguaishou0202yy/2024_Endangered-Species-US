@@ -39,6 +39,14 @@ function setMap(){
         .attr("class", "map")
         .attr("width", width)
         .attr("height", height);
+    
+    var map1 = L.map('map1').setView([51.505, -0.09], 13);
+    
+    // Create the OpenStreetMap basemap layer
+    var osmBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+    }).addTo(map1);
+    
 
     // Create the title element
     var pageTitle = document.createElement("h1");
@@ -258,10 +266,10 @@ function setEnumerationUnits(usStates, map, path, colorScale){
 function makeColorScale(data){
     var colorClasses = [
         "#edf8fb",
-        "#b3cde3",
-        "#8c96c6",
-        "#8856a7",
-        "#810f7c"
+        "#b2e2e2",
+        "#66c2a4",
+        "#2ca25f",
+        "#006d2c"
     ];
 
     //create color scale generator
