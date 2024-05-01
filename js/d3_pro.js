@@ -1,91 +1,35 @@
 // proportional symbol map with d3
 
 var attrArray = ["Scientific Name","Common Name", "Where Listed", "Region",	"ESA Listing Status", "Group", "State"];
-
-
 var expressed = attrArray[0]; //initial attribute
-
-//chart frame dimensions
-var chartWidth = window.innerWidth * 0.425,
-    chartHeight = 680;
-    leftPadding = 25,
-    rightPadding = 2,
-    topBottomPadding = 5,
-    chartInnerWidth = chartWidth - leftPadding - rightPadding,
-    chartInnerHeight = chartHeight - topBottomPadding * 2,
-    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
-
-//create a scale to size bars proportionally to frame
-var yScale = d3.scaleLinear()
-   .range([670, 0])
-   .domain([0, 500]);
-
 
 //begin script when window loads
 window.onload = setMap();
-
-
 
 //set up choropleth map
 function setMap(){
 
     //map frame dimensions
-    var width = window.innerWidth * 0.5,
-        height = 680;
+    var width = 900,
+        height = 600;
 
     //create new svg container for the map
-    var map = d3.select("body")
-        .append("svg")
-        .attr("class", "map")
-        .attr("width", width)
-        .attr("height", height);
+    var map = d3.select("body") //select document's body
+        .append("svg") //create and append a new svg element to it
+        .attr("class", "map") //set class attribute match to map
+        .attr("width", width) //give the svg width
+        .attr("height", height); //give the svg height
 
-    // Create the title element
-    var pageTitle = document.createElement("h1");
-    pageTitle.innerHTML = "Violent Crime Rate in the United States, 2022";
-    pageTitle.classList.add("page-title"); // Add a class for styling
-
-    // Create the introduction panel
-    var introductionPanel = document.createElement("div");
-    introductionPanel.innerHTML = "<p>Welcome to our interactive web app showcasing data on U.S. states and territories by violent crime rate in 2022. The data, sourced from the FBI's Uniform Crime Reports and compiled from Wikipedia, provides insights into the prevalence of violent crimes across different regions. Violent crime rates are typically expressed as incidents per 100,000 individuals per year. For example, a violent crime rate of 300 (per 100,000 inhabitants) in a population of 100,000 would signify 300 incidents of violent crime per year in that entire population, or 0.3% of the total.</p><p>Violent crimes encompass a range of offenses, including rape and sexual assault, robbery, assault, and murder. Through our app, you can explore the rates of these four types of violent crimes in each state, offering valuable insights into regional safety and security dynamics. Additionally, the app provides data on the unemployment rate in each state. By analyzing the connections between unemployment rates and violent crime rates, users can gain a deeper understanding of socioeconomic factors influencing crime trends. Explore the dropdown menu to compare the rates of different types of violent crimes and delve into the potential correlations with unemployment rates. Our interactive visualizations aim to facilitate informed analysis and promote awareness of critical societal issues.</p>";
-    introductionPanel.classList.add("introduction-panel"); // Add a class for styling
-
-    // Append the title and introduction panel to the document body
-    document.body.insertBefore(introductionPanel, document.body.firstChild);
-    document.body.insertBefore(pageTitle, introductionPanel);
-
-    var zoom = d3.zoom()
-        .scaleExtent([1,3])
-        .on("zoom", function(e) {
-            map.selectAll("path")
-                .attr("transform", e.transform);
-        });
-    map.call(zoom);
-
-    // Create a search input for states
-    var stateSearch = document.createElement("input");
-    stateSearch.setAttribute("type", "text");
-    stateSearch.setAttribute("id", "stateSearch");
-    stateSearch.setAttribute("placeholder", "Search for a state");
-    document.body.insertBefore(stateSearch, introductionPanel.nextSibling);
-
-    // Create a search button for the search input
-    var searchButton = document.createElement("button");
-    searchButton.innerHTML = "Search";
-    searchButton.setAttribute("id", "searchButton");
-    document.body.insertBefore(searchButton, stateSearch.nextSibling);
-
+  
+  
 
 
     //create Albers equal area conic projection centered on France
-    var projection = d3.geoAlbers()
-        .center([3.64, 50])
-        .rotate([102, 0, 0])
-        .parallels([40, 75])
-        .scale(630)
+    var projection = d3.geoAlbersUsa()
+        .scale(1000)
         .translate([width / 2, height / 2]);
-
-    var path = d3.geoPath()
+    
+    var path = d3.geoPath() //path generator
         .projection(projection);
 
     //use Promise.all to parallelize asynchronous data loading
@@ -101,8 +45,6 @@ function setMap(){
         states = data[2]; 
 
         console.log(csvData);
-        //console.log(countries.objects);
-        //console.log(states);
 
         //place graticule on the map
         setGraticule(map, path);
@@ -132,12 +74,6 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
-        // Event listener for the Hawaii button
-        searchButton.addEventListener("click", function() {
-            SearchBar(usStates);
-        });
-
-
         // Function to zoom the map to Hawaii
         function SearchBar(usStates) {
 
@@ -166,8 +102,6 @@ function setMap(){
             }
         }
     
-
-
     };
 };
 
@@ -267,5 +201,37 @@ function makeColorScale(data){
     colorScale.domain(domainArray);
 
     return colorScale;
+};
+
+//function to highlight enumeration units and bars
+function highlight(props){
+    //change stroke
+    var selected = d3.selectAll("." + props.adm1_code)
+        .style("stroke", "blue")
+        .style("stroke-width", "2");
+};
+
+//function to reset the element style on mouseout
+function dehighlight(props){
+    var selected = d3.selectAll("." + props.adm1_code)
+        .style("stroke", function(){
+            return getStyle(this, "stroke")
+        })
+        .style("stroke-width", function(){
+            return getStyle(this, "stroke-width")
+        });
+
+    function getStyle(element, styleName){
+        var styleText = d3.select(element)
+            .select("desc")
+            .text();
+
+        var styleObject = JSON.parse(styleText);
+
+        return styleObject[styleName];
+    };
+
+    //remove info label
+    d3.select(".infolabel").remove();
 };
 
