@@ -36,6 +36,8 @@ Endangered Species in U.S.
 *Reference:*
 Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533
    State's csv: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed 
+   proportional symbol reference: https://github.com/DevinLeeBartley/map673/blob/master/module-07/lesson-07.md
+   
 
 
 ### Wireframes

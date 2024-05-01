@@ -1,0 +1,9 @@
+
+.map {
+    border: medium solid #999;
+    margin: 20px 0 0 20px;
+}
+.states {
+    stroke: #fff;
+    fill:#005DAA;
+}
