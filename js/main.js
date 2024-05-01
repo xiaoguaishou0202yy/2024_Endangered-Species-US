@@ -387,7 +387,7 @@ function changeAttribute(attribute, csvData) {
     var yDomain;
     yDomain=[0,500]
     if (expressed === 'Amphibians') {
-        yDomain = [0, 10];
+        yDomain = [0, 20];
     } else if (expressed === 'Arachnids') {
         yDomain = [0, 10];
     } else if (expressed === 'Birds') {
