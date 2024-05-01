@@ -385,19 +385,37 @@ function changeAttribute(attribute, csvData) {
 
     // Recreate the yScale based on the selected attribute
     var yDomain;
-    if (expressed === 'Violent Crime') {
-        yDomain = [80, 880];
-    } else if (expressed === 'Homicide') {
+    yDomain=[0,500]
+    if (expressed === 'Amphibians') {
+        yDomain = [0, 20];
+    } else if (expressed === 'Arachnids') {
+        yDomain = [0, 10];
+    } else if (expressed === 'Birds') {
+        yDomain = [0, 30];
+    } else if (expressed === 'Clams') {
+        yDomain = [0, 80];
+    } else if (expressed === 'Conifers and Cycads') {
+        yDomain = [0, 5];
+    } else if (expressed === 'Crustaceans') {
+        yDomain = [0, 10];
+    } else if (expressed === 'Ferns and Allies') {
+        yDomain = [0, 30];
+    } else if (expressed === 'Fishes') {
         yDomain = [0, 40];
-    } else if (expressed === 'Rape') {
-        yDomain = [10, 150];
-    } else if (expressed === 'Robbery') {
-        yDomain = [0, 400];
-    } else if (expressed === 'Ag. Assault') {
-        yDomain = [10, 700];
-    } else if (expressed === 'Unemployment Rate (%)') {
-        yDomain = [1, 8];
-    }
+    } else if (expressed === 'Flowering Plants') {
+        yDomain = [0, 420];
+    } else if (expressed === 'Insects') {
+        yDomain = [0, 40];
+    } else if (expressed === 'Lichens') {
+        yDomain = [0, 3];
+    } else if (expressed === 'Mammals') {
+        yDomain = [0, 30];
+    } else if (expressed === 'Reptiles') {
+        yDomain = [0, 20];
+    } else if (expressed === 'Snails') {
+        yDomain = [0, 20];
+    } 
+
 
     // Update the yScale domain
     yScale.domain(yDomain);
@@ -462,13 +480,6 @@ function updateChart(bars, n, colorScale){
     var chartTitle = d3.select(".chartTitle")
         .text("Number of " + expressed + " in each state");
     
-    if (expressed !== 'Unemployment Rate (%)') {
-        chartTitle.append("tspan")
-            .attr("x", 200)
-            .attr("dy", "1.2em") // Set the vertical offset for the new line
-            .attr("class", "small-text")
-            .text("(per 100,000 inhabitants)");
-    }
 
 };
 
