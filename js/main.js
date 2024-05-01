@@ -39,6 +39,14 @@ function setMap(){
         .attr("class", "map")
         .attr("width", width)
         .attr("height", height);
+    
+    var map1 = L.map('map1').setView([51.505, -0.09], 13);
+    
+    // Create the OpenStreetMap basemap layer
+    var osmBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+    }).addTo(map1);
+    
 
     // Create the title element
     var pageTitle = document.createElement("h1");
