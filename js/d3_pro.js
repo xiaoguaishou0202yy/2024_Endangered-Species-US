@@ -30,7 +30,7 @@ function setMap(){
 
     //use Promise.all to parallelize asynchronous data loading
     var promises = [];    
-    promises.push(d3.csv("data/species_nz.csv")); //load attributes from csv    
+    promises.push(d3.csv("data/species_az.csv")); //load attributes from csv    
     promises.push(d3.json("data/countries.topojson")); //load background spatial data    
     promises.push(d3.json("data/states.topojson")); //load choropleth spatial data    
     Promise.all(promises).then(callback);
@@ -70,33 +70,12 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
-        // Function to zoom the map to Hawaii
-        function SearchBar(usStates) {
 
-            var stateName = document.getElementById('stateSearch').value;
-            // Assuming Hawaii is in the `usStates` dataset
-            var state = usStates.find(function(d) {
-                return d.properties.name.toLowerCase() === stateName.toLowerCase();
+        // Add click event listener to each state
+        map.selectAll(".regions")
+            .on("click", function(d) {
+                displaySpeciesList(usStates, d.properties.name);
             });
-
-            if (state) {
-                // Get bounds of Hawaii
-                var bounds = path.bounds(state);
-                var dx = bounds[1][0] - bounds[0][0];
-                var dy = bounds[1][1] - bounds[0][1];
-                var x = (bounds[0][0] + bounds[1][0]) / 2;
-                var y = (bounds[0][1] + bounds[1][1]) / 2;
-                var scale = 2;
-                var translate = [chartInnerWidth / 2 - scale * x, chartInnerHeight / 2 - scale * y];
-
-                // Apply zoom and pan transformation to map
-                map.transition()
-                    .duration(750)
-                    .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
-            } else {
-                alert("State not found.");
-            }
-        }
     
     };
 };
@@ -230,4 +209,32 @@ function dehighlight(props){
     //remove info label
     d3.select(".infolabel").remove();
 };
+
+
+// Function to display species list based on clicked state
+function displaySpeciesList(file, clickedState) {
+    // Filter species data based on the clicked state
+    var speciesInState = file.filter(function(d) {
+        return d.State === clickedState;
+    });
+
+    // Extract Scientific Names from filtered data
+    var scientificNames = speciesInState.map(function(d) {
+        return d["Scientific Name"];
+    });
+
+    // Remove duplicate Scientific Names
+    scientificNames = scientificNames.filter(function(item, pos) {
+        return scientificNames.indexOf(item) === pos;
+    });
+
+    // Display the list of Scientific Names
+    var speciesList = d3.select("#speciesList");
+    speciesList.html(""); // Clear previous list
+    speciesList.append("h3").text("Species in " + clickedState);
+    var list = speciesList.append("ul");
+    scientificNames.forEach(function(species) {
+        list.append("li").text(species);
+    });
+}
 
