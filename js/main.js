@@ -258,10 +258,10 @@ function setEnumerationUnits(usStates, map, path, colorScale){
 function makeColorScale(data){
     var colorClasses = [
         "#edf8fb",
-        "#b3cde3",
-        "#8c96c6",
-        "#8856a7",
-        "#810f7c"
+        "#b2e2e2",
+        "#66c2a4",
+        "#2ca25f",
+        "#006d2c"
     ];
 
     //create color scale generator
