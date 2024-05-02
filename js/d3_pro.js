@@ -74,6 +74,7 @@ function setMap(){
         // Event listener for state clicks
         map.selectAll(".regions") // Select all states on the map
             .data(usStates)
+
             .on("click", function(d) { // Add a click event listener
                 var currentState = d.properties.adm1_code; // Get the name of the clicked state
                 var speciesInState = csvData.filter(function(row) { // Filter csvData for species in the clicked state
