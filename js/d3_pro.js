@@ -74,7 +74,8 @@ function setMap(){
         // Add click event listener to each state
         map.selectAll(".regions")
             .on("click", function(d) {
-                displaySpeciesList(usStates, d.properties.name);
+                console.log(usStates)
+                displaySpeciesList(d.properties.name);
             });
     
     };
@@ -212,9 +213,9 @@ function dehighlight(props){
 
 
 // Function to display species list based on clicked state
-function displaySpeciesList(file, clickedState) {
+function displaySpeciesList(clickedState) {
     // Filter species data based on the clicked state
-    var speciesInState = file.filter(function(d) {
+    var speciesInState = usStates.filter(function(d) {
         return d.State === clickedState;
     });
 
