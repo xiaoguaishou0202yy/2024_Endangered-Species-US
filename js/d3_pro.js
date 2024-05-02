@@ -43,17 +43,17 @@ function setMap(){
         console.log(csvData);
 
         //place graticule on the map
-        setGraticule(map, path);
+        //setGraticule(map, path);
 
         // Translate TopoJSON to GeoJSON
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
 
         console.log(worldCountries);
-        //console.log(usStates);
+        console.log(usStates);
        
         //join csv data to GeoJSON enumeration units
-        usStates = joinData(usStates, csvData);
+        //usStates = joinData(usStates, csvData);
 
         console.log(usStates);
         
@@ -70,16 +70,22 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
-
-        // Add click event listener to each state
-        map.selectAll(".regions")
-            .on("click", function(d) {
-                console.log(usStates)
-                displaySpeciesList(d.properties.name);
+        
+        // Event listener for state clicks
+        map.selectAll(".regions") // Select all states on the map
+            .data(usStates)
+            .on("click", function(d) { // Add a click event listener
+                var currentState = d.properties.adm1_code; // Get the name of the clicked state
+                var speciesInState = csvData.filter(function(row) { // Filter csvData for species in the clicked state
+                    return row.adm1_code === currentState;
+                });
+                console.log(currentState)
+                displayPopup(speciesInState); // Display a pop-up with the species in the clicked state
             });
     
     };
 };
+
 
 function setGraticule(map, path){
     //create graticule generator
@@ -101,31 +107,8 @@ function setGraticule(map, path){
         .attr("d", path); //project graticule lines
 };
 
-function joinData(usStates, csvData){
-    //loop through csv to assign each set of csv attribute values to geojson region
-    for (var i=0; i<csvData.length; i++){
-        var csvRegion = csvData[i]; //the current region
-        var csvKey = csvRegion.adm1_code; //the CSV primary key
 
-        //loop through geojson regions to find correct region
-        for (var a=0; a<usStates.length; a++){
 
-            var geojsonProps = usStates[a].properties; //the current region geojson properties
-            var geojsonKey = geojsonProps.adm1_code; //the geojson primary key
-
-            //where primary keys match, transfer csv data to geojson properties object
-            if (geojsonKey == csvKey){
-
-                //assign all attributes and values
-                attrArray.forEach(function(attr){
-                    var val = parseFloat(csvRegion[attr]); //get csv attribute value
-                    geojsonProps[attr] = val; //assign attribute and value to geojson properties
-                });
-            };
-        };
-    };
-    return usStates;
-};
 
 function setEnumerationUnits(usStates, map, path, colorScale){
     //add France regions to map
@@ -211,31 +194,32 @@ function dehighlight(props){
     d3.select(".infolabel").remove();
 };
 
+// Function to display a pop-up with species information
+function displayPopup(speciesInState) {
+    // Create a div for the pop-up
+    var popup = d3.select("body").append("div")
+        .attr("class", "popup")
+        .style("position", "absolute")
+        .style("background-color", "white")
+        .style("padding", "10px")
+        .style("border", "1px solid #aaa")
+        .style("border-radius", "5px");
 
-// Function to display species list based on clicked state
-function displaySpeciesList(clickedState) {
-    // Filter species data based on the clicked state
-    var speciesInState = usStates.filter(function(d) {
-        return d.State === clickedState;
-    });
+    // Display the scientific names of species in the pop-up
+    popup.selectAll("p")
+        .data(speciesInState)
+        .enter()
+        .append("p")
+        .text(function(d) {
+            return d["Scientific Name"];
+        });
 
-    // Extract Scientific Names from filtered data
-    var scientificNames = speciesInState.map(function(d) {
-        return d["Scientific Name"];
-    });
+    // Position the pop-up near the cursor
+    popup.style("left", (d3.event.pageX + 10) + "px")
+        .style("top", (d3.event.pageY - 10) + "px");
 
-    // Remove duplicate Scientific Names
-    scientificNames = scientificNames.filter(function(item, pos) {
-        return scientificNames.indexOf(item) === pos;
-    });
-
-    // Display the list of Scientific Names
-    var speciesList = d3.select("#speciesList");
-    speciesList.html(""); // Clear previous list
-    speciesList.append("h3").text("Species in " + clickedState);
-    var list = speciesList.append("ul");
-    scientificNames.forEach(function(species) {
-        list.append("li").text(species);
+    // Remove the pop-up when clicked outside of it
+    d3.select("body").on("click", function() {
+        popup.remove();
     });
 }
-
