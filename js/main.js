@@ -40,22 +40,14 @@ function setMap(){
         .attr("width", width)
         .attr("height", height);
     
-    var map1 = L.map('map1').setView([51.505, -0.09], 13);
-    
-    // Create the OpenStreetMap basemap layer
-    var osmBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-    }).addTo(map1);
-    
-
     // Create the title element
     var pageTitle = document.createElement("h1");
-    pageTitle.innerHTML = "Violent Crime Rate in the United States, 2022";
+    pageTitle.innerHTML = "Endangered Species throughout United States";
     pageTitle.classList.add("page-title"); // Add a class for styling
 
     // Create the introduction panel
     var introductionPanel = document.createElement("div");
-    introductionPanel.innerHTML = "<p>Welcome to our interactive web app showcasing data on U.S. states and territories by violent crime rate in 2022. The data, sourced from the FBI's Uniform Crime Reports and compiled from Wikipedia, provides insights into the prevalence of violent crimes across different regions. Violent crime rates are typically expressed as incidents per 100,000 individuals per year. For example, a violent crime rate of 300 (per 100,000 inhabitants) in a population of 100,000 would signify 300 incidents of violent crime per year in that entire population, or 0.3% of the total.</p><p>Violent crimes encompass a range of offenses, including rape and sexual assault, robbery, assault, and murder. Through our app, you can explore the rates of these four types of violent crimes in each state, offering valuable insights into regional safety and security dynamics. Additionally, the app provides data on the unemployment rate in each state. By analyzing the connections between unemployment rates and violent crime rates, users can gain a deeper understanding of socioeconomic factors influencing crime trends. Explore the dropdown menu to compare the rates of different types of violent crimes and delve into the potential correlations with unemployment rates. Our interactive visualizations aim to facilitate informed analysis and promote awareness of critical societal issues.</p>";
+    introductionPanel.innerHTML = "<p>As biodiversity faces unprecedented threats from human activity, climate change, and habitat loss, tracking the status of endangered species across regions is more crucial than ever. Our interactive map and data visualization tool, the Endangered Species Tracker, offers a comprehensive view of the current state of endangered species throughout the United States.This platform is designed to provide educators, conservationists, policymakers, and the public with accurate, up-to-date information on the distribution and status of species that are threatened with extinction. By leveraging data from the U.S. Fish and Wildlife Service along with contributions from various environmental organizations, this tool illustrates how different species are distributed across states, highlighting areas where conservation efforts can be most effectively directed.</p>";
     introductionPanel.classList.add("introduction-panel"); // Add a class for styling
 
     // Append the title and introduction panel to the document body
@@ -293,8 +285,8 @@ function makeColorScale(data){
 function setChart(csvData, colorScale){
 
     // Positioning variables
-    var chartRight = 10,
-        chartTop = 260;
+    /*var chartRight = 10,
+        chartTop = 260;*/
 
     //create a second svg element to hold the bar chart
     var chart = d3.select("body")
@@ -303,8 +295,8 @@ function setChart(csvData, colorScale){
         .attr("height", chartHeight)
         .attr("class", "chart")
         .style("position", "absolute")
-        .style("right", chartRight + "px")
-        .style("top", chartTop + "px");
+        /*.style("right", chartRight + "px")
+        .style("top", chartTop + "px");*/
 
     //set bars for each state
     var bars = chart.selectAll(".bars")
@@ -469,11 +461,24 @@ function updateChart(bars, n, colorScale){
             return i * (chartInnerWidth / n) + leftPadding;
         })
         //size/resize bars
-        .attr("height", function(d, i){
-            return 670 - yScale(parseFloat(d[expressed]));
+        .attr("height", function(d, i) {
+            var parsedValue = parseFloat(d[expressed]);  // Assumes data has been cleaned
+            if (!isNaN(parsedValue)) {
+                var scaledValue = yScale(parsedValue);
+                return Math.max(0, 670 - scaledValue);  // Use Math.max to avoid negative heights
+            } else {
+                console.log("Invalid data for element:", d);  // Log the problematic data
+                return 0;  // Provides a fallback height (e.g., 0) for invalid data cases
+            }
         })
-        .attr("y", function(d, i){
-            return yScale(parseFloat(d[expressed])) + topBottomPadding;
+        .attr("y", function(d) {
+            var value = parseFloat(d[expressed]);
+            if (!isNaN(value)) {
+              return yScale(value);
+            } else {
+              console.log("Invalid data for element:", d);
+              return 0; // or set to a default position if 0 is not suitable
+            }
         })
         //color/recolor bars
         .style("fill", function(d){            

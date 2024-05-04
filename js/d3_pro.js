@@ -40,7 +40,7 @@ function setMap(){
         countries = data[1];   
         states = data[2]; 
 
-        console.log(csvData);
+        //console.log(csvData);
 
         //place graticule on the map
         //setGraticule(map, path);
@@ -49,16 +49,16 @@ function setMap(){
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
 
-        console.log(worldCountries);
-        console.log(usStates);
+        //console.log(worldCountries);
+        //console.log(usStates);
        
         //join csv data to GeoJSON enumeration units
         //usStates = joinData(usStates, csvData);
 
-        console.log(usStates);
+        //console.log(usStates);
         
             
-        //add Europe countries to map
+        //add countries to map
         var country = map.append("path")
             .datum(worldCountries)
             .attr("class", "countries")
@@ -74,16 +74,25 @@ function setMap(){
         // Event listener for state clicks
         map.selectAll(".regions") // Select all states on the map
             .data(usStates)
+            var selection = map.selectAll(".regions");
+            selection.data(usStates);
 
-            .on("click", function(d) { // Add a click event listener
-                var currentState = d.properties.adm1_code; // Get the name of the clicked state
-                var speciesInState = csvData.filter(function(row) { // Filter csvData for species in the clicked state
-                    return row.adm1_code === currentState;
-                });
-                console.log(currentState)
-                displayPopup(speciesInState); // Display a pop-up with the species in the clicked state
-            });
-    
+
+            selection.on("click", function(event,d) {
+                var d = d3.select(this).datum(); // This retrieves the data bound to the clicked element.
+                console.log("currentState", d);
+            
+                if (d && d.properties && d.properties.adm1_code) {
+                    var currentState = d.properties.adm1_code;
+                    var speciesInState = csvData.filter(function(row) {
+                        return row.adm1_code === currentState;
+                    });
+                    console.log(currentState);
+                    displayPopup(event,speciesInState);
+                } else {
+                    console.log("Data or properties are missing from this element");
+                }
+            });          
     };
 };
 
@@ -133,7 +142,7 @@ function setEnumerationUnits(usStates, map, path, colorScale){
     var desc = state.append("desc")
         .text('{"stroke": "#000", "stroke-width": "0.5px"}')
 
-    console.log(state);
+    //console.log(state);
 };
  
 //function to create color scale generator
@@ -196,31 +205,33 @@ function dehighlight(props){
 };
 
 // Function to display a pop-up with species information
-function displayPopup(speciesInState) {
+function displayPopup(event,speciesInState) {
     // Create a div for the pop-up
-    var popup = d3.select("body").append("div")
+    var popup = d3.select("body").select(".popup");
+    if (popup.empty()){
+        popup = d3.select("body").append("div")
         .attr("class", "popup")
         .style("position", "absolute")
-        .style("background-color", "white")
-        .style("padding", "10px")
-        .style("border", "1px solid #aaa")
-        .style("border-radius", "5px");
+        .style("display", "none");
+    }
+
+    // Clear existing content
+    popup.html('');
 
     // Display the scientific names of species in the pop-up
-    popup.selectAll("p")
-        .data(speciesInState)
-        .enter()
-        .append("p")
-        .text(function(d) {
-            return d["Scientific Name"];
-        });
+    speciesInState.forEach(species => {
+        popup.append("p").text(species["Scientific Name"]);
+    });
 
     // Position the pop-up near the cursor
-    popup.style("left", (d3.event.pageX + 10) + "px")
-        .style("top", (d3.event.pageY - 10) + "px");
+    popup.style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px");
 
-    // Remove the pop-up when clicked outside of it
+    // Show the popup
+    popup.style("display", "block");
+
+    // Setup to remove the pop-up when clicked outside of it
     d3.select("body").on("click", function() {
-        popup.remove();
-    });
+        popup.style("display", "none");  // Hide the popup
+    }, { once: true }); // Use once true to remove the listener after it fires
 }
