@@ -92,10 +92,11 @@ function setMap(){
                 } else {
                     console.log("Data or properties are missing from this element");
                 }
+                event.stopPropagation();
+                displayPopup(event,d.properties);
             });          
     };
 };
-
 
 function setGraticule(map, path){
     //create graticule generator
@@ -117,11 +118,8 @@ function setGraticule(map, path){
         .attr("d", path); //project graticule lines
 };
 
-
-
-
 function setEnumerationUnits(usStates, map, path, colorScale){
-    //add France regions to map
+    //add states to map
     var state = map.selectAll(".regions")
         .data(usStates)
         .enter()
@@ -137,6 +135,12 @@ function setEnumerationUnits(usStates, map, path, colorScale){
             } else {                
                 return "#ccc";            
             }    
+        })
+        .on("mouseover", function(event, d) {
+            highlight(d.properties);
+        })
+        .on("mouseout", function(event, d) {
+            dehighlight(d.properties);
         })
         
     var desc = state.append("desc")
@@ -205,33 +209,29 @@ function dehighlight(props){
 };
 
 // Function to display a pop-up with species information
-function displayPopup(event,speciesInState) {
+function displayPopup(event, speciesInState) {
     // Create a div for the pop-up
-    var popup = d3.select("body").select(".popup");
-    if (popup.empty()){
-        popup = d3.select("body").append("div")
+    var popup = d3.select("body").append("div")
         .attr("class", "popup")
-        .style("position", "absolute")
-        .style("display", "none");
-    }
-
-    // Clear existing content
-    popup.html('');
+        .style("display", "block");  // Make the popup visible
 
     // Display the scientific names of species in the pop-up
-    speciesInState.forEach(species => {
-        popup.append("p").text(species["Scientific Name"]);
-    });
-
-    // Position the pop-up near the cursor
+    popup.selectAll("p")
+        .data(speciesInState)
+        .enter()
+        .append("p")
+        .text(function(d) {
+            return d["Scientific Name"];
+        });
+        console.log(event);
+    // Position the pop-up near the cursor using the passed event object
     popup.style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 10) + "px");
+         .style("top", (event.pageY - 10) + "px");
+         console.log(event.pageX);
+         console.log(event.pageY);
+         console.log(popup);
 
-    // Show the popup
-    popup.style("display", "block");
-
-    // Setup to remove the pop-up when clicked outside of it
-    d3.select("body").on("click", function() {
-        popup.style("display", "none");  // Hide the popup
-    }, { once: true }); // Use once true to remove the listener after it fires
+    // Remove the pop-up when clicked outside of it
+    d3.select("body").on("click", function() {popup.remove(); });
 }
+
