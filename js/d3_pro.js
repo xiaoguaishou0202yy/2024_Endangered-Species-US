@@ -40,22 +40,9 @@ function setMap(){
         countries = data[1];   
         states = data[2]; 
 
-        //console.log(csvData);
-
-        //place graticule on the map
-        //setGraticule(map, path);
-
         // Translate TopoJSON to GeoJSON
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
-
-        //console.log(worldCountries);
-        //console.log(usStates);
-       
-        //join csv data to GeoJSON enumeration units
-        //usStates = joinData(usStates, csvData);
-
-        //console.log(usStates);
         
             
         //add countries to map
@@ -234,12 +221,41 @@ function displayPopup(event, speciesInState) {
     popup.style("left", xPosition + "px")
         .style("top", yPosition + "px");
 
-    console.log("Popup positioned at:", xPosition, yPosition);    
+    console.log("Popup positioned at:", xPosition, yPosition); 
+    
+    d3.selectAll(".state").on("click", function(event, data) {
+        const stateId = d3.select(this).attr("id"); // or any other unique identifier
+        displayPopup(event, data, stateId);
+    });   
 }
 
-d3.selectAll(".state").on("click", function(event, data) {
-    const stateId = d3.select(this).attr("id"); // or any other unique identifier
-    displayPopup(event, data, stateId);
-});
+//add function to show attribute on the right panel
+function updatePanel(properties) {
+    var panel = d3.select("#panel");
+    panel.html("");  // Clear the panel first
 
+    // Check if properties are available
+    if (properties) {
+        // Dynamically create a list of attributes from the properties
+        Object.keys(properties).forEach(function(key) {
+            if (key !== "Scientific Name") {  // Skip the Scientific Name as it's shown in the popup
+                var value = properties[key];
+                panel.append("p")
+                     .html(`<strong>${key}:</strong> ${value || "No data available"}`);
+            }
+        });
+    } else {
+        panel.append("p").text("No information available.");
+    }
+}
+
+    // Add event listener to each state path
+    map.selectAll(".state").on("click", function(event, d) {
+        // Display the popup for the Scientific Name
+        displayPopup(event, d.properties['Scientific Name']);
+
+        // Update the panel with the rest of the attributes
+        updatePanel(d.properties);
+    });
+console.log(map);
 
