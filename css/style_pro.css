@@ -14,35 +14,15 @@
 }
 /* Style for popup */
 .popup {
-    position: absolute;        /* Absolute positioning to place it according to cursor */
-    z-index: 10;               /* Keeps the popup above other elements */
-    padding: 10px;             /* Space inside the popup */
-    background-color: rgb(251, 252, 253);   /* White background for readability */
-    border: 1px solid #aaa;    /* Subtle border */
-    border-radius: 5px;        /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);  /* Soft shadow for 3D effect */
-    max-width: 300px;          /* Maximum width of the popup */
-    overflow-y: auto;          /* Enables scrolling inside the popup if content is too long */
-    max-height: 400px;         /* Maximum height before scrolling */
-    display: none;             /* Hidden by default, shown when needed */
-    font-family: Arial, sans-serif; /* Font styling for text */
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 1000; /* Ensures it's on top */
+    font-family: sans-serif;
+    font-size: 16px;
+    color:rgb(5, 5, 5);
 }
-
-.popup p {
-    margin: 0;                 /* Remove margin from paragraphs to manage spacing manually */
-    font-size: 14px;           /* Suitable font size for readability */
-    color: #333;               /* Dark gray color for text */
-}
-
-.popup-heading {
-    font-size: 16px;           /* Slightly larger font size for headings */
-    font-weight: bold;         /* Bold font for headings */
-    margin-bottom: 10px;       /* Spacing below the heading */
-    color: #0056b3;            /* Color for headings */
-}
-
-
-
 
 h1, h2 {
     position: absolute;
