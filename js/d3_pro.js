@@ -211,15 +211,6 @@ function dehighlight(props){
 // Function to display a pop-up with species information
 function displayPopup(event, speciesInState) {
 
-    // Prevent the event from propagating further
-    event.stopPropagation();
-
-
-    console.log("Creating popup...");
-
-    // Check the actual data passed
-    console.log("Species data:", speciesInState);
-
     // Create a div for the pop-up
     var popup = d3.select("body").append("div")
         .attr("class", "popup")
@@ -230,19 +221,25 @@ function displayPopup(event, speciesInState) {
         .data(speciesInState)
         .enter()
         .append("p")
-        .text(function(d) { 
+        .text(function(d) {
             return d["Scientific Name"] ? d["Scientific Name"] : "No scientific name available";
         });
 
     console.log("Paragraphs added:", paragraphs.size());
 
-    popup.style("left", (event.pageX + 10) + "px")
-         .style("top", (event.pageY - 10) + "px");
+    // Adjust popup position, adding a bit more space if needed
+    var xPosition = event.pageX + 10;
+    var yPosition = event.pageY - 10;
 
-    console.log("Popup positioned at:", event.pageX + 10, event.pageY - 10);
-    }
-    // Assume you bind events like this, and make sure to pass the stateId when calling displayPopup
+    popup.style("left", xPosition + "px")
+        .style("top", yPosition + "px");
+
+    console.log("Popup positioned at:", xPosition, yPosition);    
+}
+
 d3.selectAll(".state").on("click", function(event, data) {
-    const stateId = d3.select(this).attr("id");  // or any other unique identifier
+    const stateId = d3.select(this).attr("id"); // or any other unique identifier
     displayPopup(event, data, stateId);
 });
+
+
