@@ -65,7 +65,7 @@ function setMap(){
             selection.data(usStates);
 
 
-            selection.on("click", function(event,d) {
+            selection.on("mouseover", function(event,d) {
                 var d = d3.select(this).datum(); // This retrieves the data bound to the clicked element.
                 console.log("currentState", d);
             
@@ -81,7 +81,14 @@ function setMap(){
                 }
                 event.stopPropagation();
                 displayPopup(event,d.properties);
-            });          
+            }); 
+            
+            selection.on("mouseout", function(event,d){
+                const popups = document.querySelectorAll('.popup');
+                                    popups. forEach(popup => {
+                                        popup.remove();
+                                    });
+            });
     };
 };
 
@@ -223,10 +230,10 @@ function displayPopup(event, speciesInState) {
 
     console.log("Popup positioned at:", xPosition, yPosition); 
     
-    d3.selectAll(".state").on("click", function(event, data) {
-        const stateId = d3.select(this).attr("id"); // or any other unique identifier
-        displayPopup(event, data, stateId);
-    });   
+    //d3.selectAll(".state").on("mouseover", function(event, data) {
+        //const stateId = d3.select(this).attr("id"); // or any other unique identifier
+       // displayPopup(event, data, stateId);
+   // });   
 }
 
 //add function to show attribute on the right panel
