@@ -230,7 +230,7 @@ function displayPopup(event, speciesInState) {
 }
 
 //add function to show attribute on the right panel
-function updatePanel(properties) {
+/*function updatePanel(properties) {
     var panel = d3.select("#panel");
     panel.html("");  // Clear the panel first
 
@@ -257,5 +257,5 @@ function updatePanel(properties) {
         // Update the panel with the rest of the attributes
         updatePanel(d.properties);
     });
-console.log(map);
+console.log(map);*/
 
