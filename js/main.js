@@ -112,7 +112,6 @@ function setMap(){
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
 
         console.log(worldCountries);
-        //console.log(usStates);
        
         //join csv data to GeoJSON enumeration units
         usStates = joinData(usStates, csvData);
@@ -136,7 +135,6 @@ function setMap(){
         setChart(csvData, colorScale);
 
         createDropdown(csvData);
-
 
         // Event listener for the Hawaii button
         searchButton.addEventListener("click", function() {
@@ -323,7 +321,7 @@ function setChart(csvData, colorScale){
     //CHARTTITLE, YAXIS, AXIS, AND CHARTFRAME BLOCKS
     
     var chartTitle = chart.append("text")
-        .attr("x", 40)
+        .attr("x", 80)
         .attr("y", 40)
         .attr("class", "chartTitle")
         .text("Number of " + expressed + " in each state");

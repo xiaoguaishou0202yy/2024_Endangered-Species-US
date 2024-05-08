@@ -57,8 +57,21 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
+        /*map.selectAll(".state")
+            .sata(usStates)
+            var selection = map.selectAll(".state");
+            selection.data(usStates);*/
+
+        /*map.selectAll(".state").on("mouseover", function(event, d) {
+            // Display the popup for the Scientific Name
+            displayPopup(event, d.properties['Scientific Name']);
+    
+            // Update the panel with the rest of the attributes
+            updatePanel(d.properties);
+        });*/
+
         
-        // Event listener for state clicks
+        // Event listener for state when mouseover
         map.selectAll(".regions") // Select all states on the map
             .data(usStates)
             var selection = map.selectAll(".regions");
@@ -230,14 +243,15 @@ function displayPopup(event, speciesInState) {
 
     console.log("Popup positioned at:", xPosition, yPosition); 
     
-    //d3.selectAll(".state").on("mouseover", function(event, data) {
-        //const stateId = d3.select(this).attr("id"); // or any other unique identifier
-       // displayPopup(event, data, stateId);
-   // });   
+    d3.selectAll(".state").on("mouseover", function(event, data) {
+        const stateId = d3.select(this).attr("id"); // or any other unique identifier
+       displayPopup(event, data, stateId);
+   }); 
+    console.log(selectAll);  
 }
 
 //add function to show attribute on the right panel
-/*function updatePanel(properties) {
+function updatePanel(properties) {
     var panel = d3.select("#panel");
     panel.html("");  // Clear the panel first
 
@@ -257,12 +271,12 @@ function displayPopup(event, speciesInState) {
 }
 
     // Add event listener to each state path
-    map.selectAll(".state").on("click", function(event, d) {
+    map.selectAll(".state").on("mouseover", function(event, d) {
         // Display the popup for the Scientific Name
         displayPopup(event, d.properties['Scientific Name']);
 
         // Update the panel with the rest of the attributes
         updatePanel(d.properties);
     });
-console.log(map);*/
+console.log(map);
 
