@@ -12,6 +12,7 @@
     fill: #f8fafb;
     margin: 20px 0 0 20px;
 }
+
 /* Style for popup */
 .popup {
     position: absolute;
@@ -36,13 +37,14 @@ h2 {
     top: 60px;
     font-size: 1.2em;
 }
-#panel {
+#right-panel {
     position: absolute;
     right: 0;
-    width: 300px;
+    width: 30%;
     height: 100%;
+    overflow-y: auto; /* Enables scrolling if content is too long */
     background-color:rgb(197, 195, 195);
     overflow-y: auto;
     padding: 10px;
-
+    box-sizing: border-box;
 }
