@@ -57,51 +57,38 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
-        /*map.selectAll(".state")
-            .sata(usStates)
-            var selection = map.selectAll(".state");
-            selection.data(usStates);*/
-
-        /*map.selectAll(".state").on("mouseover", function(event, d) {
-            // Display the popup for the Scientific Name
-            displayPopup(event, d.properties['Scientific Name']);
-    
-            // Update the panel with the rest of the attributes
-            updatePanel(d.properties);
-        });*/
-
         
-        // Event listener for state when mouseover
-        map.selectAll(".regions") // Select all states on the map
-            .data(usStates)
-            var selection = map.selectAll(".regions");
-            selection.data(usStates);
+        // // Event listener for state when mouseover
+        // map.selectAll(".regions") // Select all states on the map
+        //     .data(usStates)
+        //     var selection = map.selectAll(".regions");
+        //     selection.data(usStates);
 
 
-            selection.on("mouseover", function(event,d) {
-                var d = d3.select(this).datum(); // This retrieves the data bound to the clicked element.
-                console.log("currentState", d);
-            
-                if (d && d.properties && d.properties.adm1_code) {
-                    var currentState = d.properties.adm1_code;
-                    var speciesInState = csvData.filter(function(row) {
-                        return row.adm1_code === currentState;
-                    });
-                    console.log(currentState);
-                    displayPopup(event,speciesInState);
-                } else {
-                    console.log("Data or properties are missing from this element");
-                }
-                event.stopPropagation();
-                displayPopup(event,d.properties);
-            }); 
-            
-            selection.on("mouseout", function(event,d){
-                const popups = document.querySelectorAll('.popup');
-                                    popups. forEach(popup => {
-                                        popup.remove();
-                                    });
-            });
+        // selection.on("mouseover", function(event,d) {
+        //     var d = d3.select(this).datum(); // This retrieves the data bound to the clicked element.
+        //     console.log("currentState", d);
+        
+        //     if (d && d.properties && d.properties.adm1_code) {
+        //         var currentState = d.properties.adm1_code;
+        //         var speciesInState = csvData.filter(function(row) {
+        //             return row.adm1_code === currentState;
+        //         });
+        //         console.log(currentState);
+        //         displayPopup(event,speciesInState);
+        //     } else {
+        //         console.log("Data or properties are missing from this element");
+        //     }
+        //     event.stopPropagation();
+        //     displayPopup(event,d.properties);
+        // }); 
+        
+        // selection.on("mouseout", function(event,d){
+        //     const popups = document.querySelectorAll('.popup');
+        //                         popups. forEach(popup => {
+        //                             popup.remove();
+        //                         });
+        //});
     };
 };
 
@@ -142,6 +129,13 @@ function setEnumerationUnits(usStates, map, path, colorScale){
             } else {                
                 return "#ccc";            
             }    
+        })
+        .on("click", function(event, d) {
+            var currentStateCode = d.properties.adm1_code; // Assuming 'adm1_code' is how states are identified in your data
+            var speciesInState = csvData.filter(function(row) {
+                return row.adm1_code === currentStateCode;
+            });
+            updatePanel(speciesInState); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d) {
             highlight(d.properties);
@@ -216,67 +210,56 @@ function dehighlight(props){
 };
 
 // Function to display a pop-up with species information
-function displayPopup(event, speciesInState) {
+// function displayPopup(event, speciesInState) {
 
-    // Create a div for the pop-up
-    var popup = d3.select("body").append("div")
-        .attr("class", "popup")
-        .style("display", "block");
+//     // Create a div for the pop-up
+//     var popup = d3.select("body").append("div")
+//         .attr("class", "popup")
+//         .style("display", "block");
 
-    // Display the scientific names of species in the pop-up
-    var paragraphs = popup.selectAll("p")
-        .data(speciesInState)
-        .enter()
-        .append("p")
-        .text(function(d) {
-            return d["Scientific Name"] ? d["Scientific Name"] : "No scientific name available";
-        });
+//     // Display the scientific names of species in the pop-up
+//     var paragraphs = popup.selectAll("p")
+//         .data(speciesInState)
+//         .enter()
+//         .append("p")
+//         .text(function(d) {
+//             return d["Scientific Name"] ? d["Scientific Name"] : "No scientific name available";
+//         });
 
-    console.log("Paragraphs added:", paragraphs.size());
+//     //console.log("Paragraphs added:", paragraphs.size());
 
-    // Adjust popup position, adding a bit more space if needed
-    var xPosition = event.pageX + 10;
-    var yPosition = event.pageY - 10;
+//     // Adjust popup position, adding a bit more space if needed
+//     var xPosition = event.pageX + 10;
+//     var yPosition = event.pageY - 10;
 
-    popup.style("left", xPosition + "px")
-        .style("top", yPosition + "px");
+//     popup.style("left", xPosition + "px")
+//         .style("top", yPosition + "px");
 
-    console.log("Popup positioned at:", xPosition, yPosition); 
+//     //console.log("Popup positioned at:", xPosition, yPosition); 
     
-    d3.selectAll(".state").on("mouseover", function(event, data) {
-        const stateId = d3.select(this).attr("id"); // or any other unique identifier
-       displayPopup(event, data, stateId);
-   }); 
-    console.log(selectAll);  
-}
+//     d3.selectAll(".state").on("mouseover", function(event, data) {
+//         const stateId = d3.select(this).attr("id"); // or any other unique identifier
+//        displayPopup(event, data, stateId);
+//    });  
+// }
 
-//add function to show attribute on the right panel
-function updatePanel(properties) {
-    var panel = d3.select("#panel");
+
+// Function to update the right panel with species information
+function updatePanel(speciesInState) {
+    var panel = d3.select("#right-panel");
     panel.html("");  // Clear the panel first
 
-    // Check if properties are available
-    if (properties) {
-        // Dynamically create a list of attributes from the properties
-        Object.keys(properties).forEach(function(key) {
-            if (key !== "Scientific Name") {  // Skip the Scientific Name as it's shown in the popup
-                var value = properties[key];
-                panel.append("p")
-                     .html(`<strong>${key}:</strong> ${value || "No data available"}`);
-            }
+    // Append a header
+    panel.append("h3").text("Species in State");
+
+    // Check if species data is available for the clicked state
+    if (speciesInState.length > 0) {
+        speciesInState.forEach(function(species) {
+            panel.append("p").text(species["Scientific Name"] || "No scientific name available");
         });
     } else {
-        panel.append("p").text("No information available.");
+        panel.append("p").text("No species data available for this state.");
     }
 }
 
-    // Add event listener to each state path
-    map.selectAll(".state").on("mouseover", function(event, d) {
-        // Display the popup for the Scientific Name
-        displayPopup(event, d.properties['Scientific Name']);
-
-        // Update the panel with the rest of the attributes
-        updatePanel(d.properties);
-    });
-console.log(map);
 

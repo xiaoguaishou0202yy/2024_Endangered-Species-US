@@ -1,13 +1,14 @@
 // Add all scripts to the JS folder
 
 var attrArray = ["Grand Total","Amphibians", "Arachnids", "Birds",	"Clams", "Conifers and Cycads", "Crustaceans", "Ferns and Allies", "Fishes", "Flowering Plants", "Insects", "Lichens", "Mammals", "Reptiles", "Snails"];
-
+var attrArraySpecies = ["Scientific Name","Common Name", "Where Listed", "Region",	"ESA Listing Status", "Group", "State"];
 
 var expressed = attrArray[0]; //initial attribute
+var expressedSpecies = attrArraySpecies[0];
 
 //chart frame dimensions
-var chartWidth = window.innerWidth * 0.425,
-    chartHeight = 680;
+var chartWidth = window.innerWidth * 0.3,
+    chartHeight = 300;
     leftPadding = 25,
     rightPadding = 2,
     topBottomPadding = 5,
@@ -17,7 +18,7 @@ var chartWidth = window.innerWidth * 0.425,
 
 //create a scale to size bars proportionally to frame
 var yScale = d3.scaleLinear()
-   .range([670, 0])
+   .range([290, 0])
    .domain([0, 500]);
 
 
@@ -93,12 +94,14 @@ function setMap(){
     promises.push(d3.csv("data/Species.csv")); //load attributes from csv    
     promises.push(d3.json("data/countries.topojson")); //load background spatial data    
     promises.push(d3.json("data/states.topojson")); //load choropleth spatial data    
+    promises.push(d3.csv("data/species_az.csv")); //load attributes from csv 
     Promise.all(promises).then(callback);
 
     function callback(data){    
         csvData = data[0];    
         countries = data[1];   
         states = data[2]; 
+        csvSpecies = data[3];
 
         console.log(csvData);
         //console.log(countries.objects);
@@ -238,6 +241,13 @@ function setEnumerationUnits(usStates, map, path, colorScale){
             } else {                
                 return "#ccc";            
             }    
+        })
+        .on("click", function(event, d) {
+            var currentStateCode = d.properties.adm1_code; // Assuming 'adm1_code' is how states are identified in your data
+            var speciesInState = csvSpecies.filter(function(row) {
+                return row.adm1_code === currentStateCode;
+            });
+            updatePanel(speciesInState); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d){
             highlight(d.properties);
@@ -463,7 +473,7 @@ function updateChart(bars, n, colorScale){
             var parsedValue = parseFloat(d[expressed]);  // Assumes data has been cleaned
             if (!isNaN(parsedValue)) {
                 var scaledValue = yScale(parsedValue);
-                return Math.max(0, 670 - scaledValue);  // Use Math.max to avoid negative heights
+                return Math.max(0, 290 - scaledValue);  // Use Math.max to avoid negative heights
             } else {
                 console.log("Invalid data for element:", d);  // Log the problematic data
                 return 0;  // Provides a fallback height (e.g., 0) for invalid data cases
@@ -569,3 +579,22 @@ function moveLabel(){
         .style("left", x + "px")
         .style("top", y + "px");
 };
+
+
+// Function to update the right panel with species information
+function updatePanel(speciesInState) {
+    var panel = d3.select("#right-panel");
+    panel.html("");  // Clear the panel first
+
+    // Append a header
+    panel.append("h3").text("Species in State");
+
+    // Check if species data is available for the clicked state
+    if (speciesInState.length > 0) {
+        speciesInState.forEach(function(species) {
+            panel.append("p").text(species["Scientific Name"] || "No scientific name available");
+        });
+    } else {
+        panel.append("p").text("No species data available for this state.");
+    }
+}
