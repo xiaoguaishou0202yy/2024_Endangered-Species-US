@@ -7,7 +7,7 @@ var expressed = attrArray[0]; //initial attribute
 var expressedSpecies = attrArraySpecies[0];
 
 //chart frame dimensions
-var chartWidth = window.innerWidth * 0.3,
+var chartWidth = window.innerWidth * 0.26,
     chartHeight = 300;
     leftPadding = 25,
     rightPadding = 2,
@@ -581,20 +581,54 @@ function moveLabel(){
 };
 
 
-// Function to update the right panel with species information
 function updatePanel(speciesInState) {
     var panel = d3.select("#right-panel");
     panel.html("");  // Clear the panel first
 
     // Append a header
-    panel.append("h3").text("Species in State");
+    panel.append("h3").text("Species Groups in State");
 
-    // Check if species data is available for the clicked state
-    if (speciesInState.length > 0) {
-        speciesInState.forEach(function(species) {
-            panel.append("p").text(species["Scientific Name"] || "No scientific name available");
+    // Collect unique groups
+    let groups = new Map();
+
+    speciesInState.forEach(species => {
+        if (species.Group && species["Scientific Name"]) {
+            if (!groups.has(species.Group)) {
+                groups.set(species.Group, []);
+            }
+            groups.get(species.Group).push(species["Scientific Name"]);
+        }
+    });
+
+    if (groups.size > 0) {
+        groups.forEach((speciesList, group) => {
+            // Container for each group
+            let groupContainer = panel.append("div").attr("class", "group-container");
+
+            // Clickable header for each group
+            let header = groupContainer.append("p")
+                .text(group)
+                .attr("class", "group-header")
+                .style("cursor", "pointer");
+
+            // Hidden list that will toggle on click
+            let list = groupContainer.append("ul")
+                .style("display", "none")
+                .attr("class", "species-list");
+
+            // Append species to the list
+            speciesList.forEach(species => {
+                list.append("li").text(species);
+            });
+
+            // Toggle display on click
+            header.on("click", function() {
+                let isVisible = list.style("display") === "none";
+                list.style("display", isVisible ? "block" : "none");
+            });
         });
     } else {
-        panel.append("p").text("No species data available for this state.");
+        panel.append("p").text("No groups available for this state.");
     }
 }
+

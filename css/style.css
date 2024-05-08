@@ -179,9 +179,26 @@ option {
     width: 20%;
     height: 680px;
     overflow-y: auto; /* Enables scrolling if content is too long */
-    background-color:rgb(178, 190, 180);
+    background-color:rgb(215, 233, 215);
     overflow-y: auto;
     padding: 10px;
     box-sizing: border-box;
     margin: 20px 0 0 20px;
+}
+
+.group-header {
+    margin-top: 10px;
+    font-weight: bold;
+    background-color: #eee;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.species-list {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.species-list li {
+    padding: 2px 0;
 }
