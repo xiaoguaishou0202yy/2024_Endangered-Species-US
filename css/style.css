@@ -2,6 +2,11 @@
 
 /* Stylesheet by Zhiyi Li, 2024 */
 
+body {
+    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+}
+
 .countries {
     fill: #FFF;
     stroke: #CCC;
@@ -33,7 +38,7 @@
 }
 
 
-.map {
+/*.map {
     
     border: medium solid #999;
     margin: 20px 0 0 20px;
@@ -50,6 +55,48 @@
     font-size: 1.2em;
     font-weight: bold;
 }
+
+.dropdown {
+    position: absolute;
+    top: 210px;
+    left: 40px;
+    z-index: 10;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 2px;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 4px #999;
+}
+*/
+
+.map-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.map {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.chart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chart, .species-list {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
 
 .chartFrame {
     fill: none;
@@ -102,9 +149,10 @@ option {
     text-align: center; /* Center align the title */
     margin-top: 20px; /* Adjust top margin as needed */
     padding: 10px; /* Add padding for space around the title */
-    background-color: rgb(35, 121, 52); /* Add background color */
-    color: white; /* Add text color */
-    font-size: 24px; /* Adjust font size */
+    /*background-color: rgb(35, 121, 52); /* Add background color */
+    color: #205223;
+    /*color: white; /* Add text color */
+    font-size: 28px; /* Adjust font size */
 }
 
 /* Style for the introduction panel */
@@ -120,7 +168,7 @@ option {
     font-size: 0.8em; /* Adjust the font size as needed */
 }
 
-#controls {
+.controls {
     position: absolute;
     top: 10px; /* Adjust as needed */
     left: 50%; /* Center align the controls */
@@ -130,6 +178,17 @@ option {
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+}
+
+.input, .dropdown {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 #stateSearch {
@@ -148,7 +207,7 @@ option {
     top: 210px;
     left: 920px;
     padding: 8px 12px;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 4px;
     background-color: rgb(35, 121, 52); /* Blue color for the button */
     color: #fff; /* White text color */
@@ -156,18 +215,7 @@ option {
     cursor: pointer;
 }
 
-.dropdown {
-    position: absolute;
-    top: 210px;
-    left: 40px;
-    z-index: 10;
-    font-family: sans-serif;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 2px;
-    border: 1px solid #999;
-    box-shadow: 2px 2px 4px #999;
-}
+
 
 #searchButton:hover {
     background-color: rgb(35, 121, 52); /* Darker blue color on hover */
