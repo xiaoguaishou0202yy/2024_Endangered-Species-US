@@ -38,23 +38,7 @@ body {
 }
 
 
-/*.map {
-    
-    border: medium solid #999;
-    margin: 20px 0 0 20px;
-}
-
-.chart {
-    background-color: rgba(128,128,128,.2);
-    margin: 20px 20px 0 0;
-}
-
-
-.chartTitle {
-    font-family: sans-serif;
-    font-size: 1.2em;
-    font-weight: bold;
-}
+/*
 
 .dropdown {
     position: absolute;
@@ -70,23 +54,28 @@ body {
 }
 */
 
+.container {
+    display: flex;           /* Establishes a flex container */
+    justify-content: center; /* Centers children horizontally */
+    align-items: stretch;    /* Stretches children to fit the container height */
+    width: 85%;             /* Optional: spans the full width of the viewport */
+    height: 100vh;           /* Optional: spans the full height of the viewport */
+}
+.chart-container {
+    flex: 1;                 /* Takes up 1 part of the available space */
+    /* Additional styling as needed */
+}
+
 .map-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    flex: 2;                 /* Takes up 2 parts of the available space, making it larger than the chart */
+    /* Additional styling as needed */
 }
 
 .map {
-    flex: 1;
-    margin-right: 20px;
+    /*border: medium solid #999;*/
+    margin: 20px 0 0 0px;
 }
 
-.chart-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
 
 .chart, .species-list {
     margin-bottom: 20px;
@@ -94,8 +83,13 @@ body {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 20px 20px 0 0;
 }
 
+.chartTitle {
+    font-size: 1.1em;
+    font-weight: bold;
+}
 
 
 .chartFrame {

@@ -35,7 +35,7 @@ function setMap(){
         height = 680;
 
     //create new svg container for the map
-    var map = d3.select("body")
+    var map = d3.select(".map-container")
         .append("svg")
         .attr("class", "map")
         .attr("width", width)
@@ -340,7 +340,7 @@ function setChart(csvData, colorScale){
         chartTop = 260;*/
 
     //create a second svg element to hold the bar chart
-    var chart = d3.select("body")
+    var chart = d3.select(".chart-container")
         .append("svg")
         .attr("width", chartWidth)
         .attr("height", chartHeight)
@@ -374,7 +374,7 @@ function setChart(csvData, colorScale){
     //CHARTTITLE, YAXIS, AXIS, AND CHARTFRAME BLOCKS
     
     var chartTitle = chart.append("text")
-        .attr("x", 80)
+        .attr("x", 60)
         .attr("y", 40)
         .attr("class", "chartTitle")
         .text("Number of " + expressed + " in each state");
