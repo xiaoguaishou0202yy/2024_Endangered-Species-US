@@ -57,10 +57,12 @@ function setMap(){
 
     var zoom = d3.zoom()
         .scaleExtent([1,3])
-        .on("zoom", function(e) {
-            map.selectAll("path")
-                .attr("transform", e.transform);
+        .on("zoom", function(event) {
+            map.selectAll("path, circle") // Now includes circles
+                .attr("transform", event.transform);
         });
+
+
     map.call(zoom);
 
     // Create a search input for states
@@ -133,6 +135,9 @@ function setMap(){
         
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
+
+        var sizeScale = getSizeScale(csvData); // Get the size scale based on your data
+        setProportionalSymbols(usStates, map, path, sizeScale);
 
         //add coordinated visualization to the map
         setChart(csvData, colorScale);
@@ -288,6 +293,45 @@ function makeColorScale(data){
 
     return colorScale;
 };
+
+
+// First, create a size scale for the symbols
+function getSizeScale(csvData) {
+    // Create a scale for circle radius
+    var size = d3.scaleSqrt()
+        .range([0, 50]) // Max circle radius in pixels
+        .domain([0, d3.max(csvData, function(d) { return +d[expressed]; })]); // Dynamically calculate max data value
+    return size;
+}
+
+// Function to add proportional symbols
+function setProportionalSymbols(usStates, map, path, sizeScale) {
+    // Calculate centroids for each state for placing circles
+    usStates.forEach(function(d) {
+        d.properties.centroid = path.centroid(d);
+    });
+
+    var symbols = map.selectAll(".symbol")
+        .data(usStates)
+        .enter()
+        .append("circle")
+        .attr("class", "symbol")
+        .attr("cx", function(d) { return d.properties.centroid[0]; })
+        .attr("cy", function(d) { return d.properties.centroid[1]; })
+        .attr("r", function(d) {
+            var value = d.properties[expressed];
+            return value ? sizeScale(value) : 0; // Avoid creating a circle for undefined values
+        })
+        .style("fill", "#6e016b") // You can keep color static or scale it as well
+        .style("opacity", 0.6);
+
+    // Optional: Add interactions or additional styles here
+}
+
+
+
+
+
 
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
