@@ -134,7 +134,7 @@ function setMap(){
         var colorScale = makeColorScale(csvData);
         
         //add enumeration units to the map
-        setEnumerationUnits(usStates, map, path, colorScale);
+        setEnumerationUnits(usStates, map, path);
 
         var sizeScale = getSizeScale(csvData); // Get the size scale based on your data
         setProportionalSymbols(usStates, map, path, sizeScale);
@@ -229,7 +229,7 @@ function joinData(usStates, csvData){
     return usStates;
 };
 
-function setEnumerationUnits(usStates, map, path, colorScale){
+function setEnumerationUnits(usStates, map, path){
     //add France regions to map
     var state = map.selectAll(".regions")
         .data(usStates)
@@ -239,14 +239,9 @@ function setEnumerationUnits(usStates, map, path, colorScale){
             return "regions " + d.properties.adm1_code;
         })
         .attr("d", path)        
-        .style("fill", function(d){            
-            var value = d.properties[expressed];            
-            if(value) {                
-                return colorScale(d.properties[expressed]);            
-            } else {                
-                return "#ccc";            
-            }    
-        })
+        .style("fill", "#D3D3D3")
+        .style("stroke", "#FFFFFF") // Optional: add a stroke around states
+        .style("stroke-width", "1px")
         .on("click", function(event, d) {
             var currentStateCode = d.properties.adm1_code; // Assuming 'adm1_code' is how states are identified in your data
             var speciesInState = csvSpecies.filter(function(row) {
@@ -267,7 +262,9 @@ function setEnumerationUnits(usStates, map, path, colorScale){
     console.log(state);
 };
  
-//function to create color scale generator
+// //function to create color scale generator
+
+
 function makeColorScale(data){
     var colorClasses = [
         "#edf8fb",
@@ -296,6 +293,8 @@ function makeColorScale(data){
 
 
 // First, create a size scale for the symbols
+
+
 function getSizeScale(csvData) {
     // Create a scale for circle radius
     var size = d3.scaleSqrt()
@@ -322,7 +321,7 @@ function setProportionalSymbols(usStates, map, path, sizeScale) {
             var value = d.properties[expressed];
             return value ? sizeScale(value) : 0; // Avoid creating a circle for undefined values
         })
-        .style("fill", "#6e016b") // You can keep color static or scale it as well
+        .style("fill", "#008866") // You can keep color static or scale it as well
         .style("opacity", 0.6);
 
     // Optional: Add interactions or additional styles here
@@ -435,6 +434,10 @@ function changeAttribute(attribute, csvData) {
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
 
+    var sizeScale = getSizeScale(csvData);
+
+    var maxVal = d3.max(csvData, function(d) { return parseFloat(d[expressed]); });
+
     // Recreate the yScale based on the selected attribute
     var yDomain;
     yDomain=[0,500]
@@ -476,17 +479,26 @@ function changeAttribute(attribute, csvData) {
     var yAxis = d3.axisLeft().scale(yScale);
     d3.select(".axis").call(yAxis);
 
-    //recolor enumeration units
-    var regions = d3.selectAll(".regions")
+    // //recolor enumeration units
+    // var regions = d3.selectAll(".regions")
+    //     .transition()
+    //     .duration(1000)
+    //     .style("fill", function (d) {
+    //         var value = d.properties[expressed];
+    //         if (value) {
+    //             return colorScale(d.properties[expressed]);
+    //         } else {
+    //             return "#ccc";
+    //         }
+    //     });
+
+    // Resize proportional symbols
+    d3.selectAll(".symbol")
         .transition()
         .duration(1000)
-        .style("fill", function (d) {
+        .attr("r", function(d) {
             var value = d.properties[expressed];
-            if (value) {
-                return colorScale(d.properties[expressed]);
-            } else {
-                return "#ccc";
-            }
+            return value ? sizeScale(value) : 0;
         });
     
     //Sort, resize, and recolor bars
