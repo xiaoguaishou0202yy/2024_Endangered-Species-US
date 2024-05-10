@@ -340,11 +340,6 @@ function setProportionalSymbols(usStates, map, path, sizeScale) {
     // Optional: Add interactions or additional styles here
 }
 
-
-
-
-
-
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
 
@@ -574,6 +569,7 @@ function updateChart(bars, n, colorScale){
 
 };
 
+
 //function to highlight enumeration units and bars
 function highlight(props){
     //change stroke
@@ -728,4 +724,36 @@ function showTooltip(event, species) {
 function hideTooltip() {
     d3.select("#tooltip").style("visibility", "hidden");
 }
+
+function setupEventListeners() {
+    var resetButton = document.getElementById('resetMap');
+    if (resetButton) {
+        resetButton.addEventListener('mouseover', function() {
+            document.getElementById('resetTooltip').style.display = 'block';
+        });
+
+        resetButton.addEventListener('mouseout', function() {
+            document.getElementById('resetTooltip').style.display = 'none';
+        });
+    }
+
+    // Additional event listeners can be added here
+    document.addEventListener('DOMContentLoaded', function() {
+        var dropdown = document.querySelector('.dropdown-container select'); // update this selector as necessary
+        var tooltip = document.getElementById('dropdownTooltip');
+        console.log(dropdown, tooltip);  // Check if elements are correctly selected
+    
+        dropdown.addEventListener('mouseover', function() {
+            console.log("Mouseover triggered");  // Check if this triggers
+            tooltip.style.display = 'block';
+        });
+    
+        dropdown.addEventListener('mouseout', function() {
+            console.log("Mouseout triggered");  // Check if this triggers
+            tooltip.style.display = 'none';
+        });
+    });
+       
+}
+
 

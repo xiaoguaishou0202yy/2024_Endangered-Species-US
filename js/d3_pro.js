@@ -1,36 +1,96 @@
-// proportional symbol map with d3
+// Add all scripts to the JS folder
 
-var attrArray = ["Scientific Name","Common Name", "Where Listed", "Region",	"ESA Listing Status", "Group", "State"];
+var attrArray = ["Grand Total","Amphibians", "Arachnids", "Birds",	"Clams", "Conifers and Cycads", "Crustaceans", "Ferns and Allies", "Fishes", "Flowering Plants", "Insects", "Lichens", "Mammals", "Reptiles", "Snails"];
+
+
 var expressed = attrArray[0]; //initial attribute
+
+//chart frame dimensions
+var chartWidth = window.innerWidth * 0.425,
+    chartHeight = 680;
+    leftPadding = 25,
+    rightPadding = 2,
+    topBottomPadding = 5,
+    chartInnerWidth = chartWidth - leftPadding - rightPadding,
+    chartInnerHeight = chartHeight - topBottomPadding * 2,
+    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+
+//create a scale to size bars proportionally to frame
+var yScale = d3.scaleLinear()
+   .range([670, 0])
+   .domain([0, 500]);
+
 
 //begin script when window loads
 window.onload = setMap();
 
-//set up choropleth map
+
+
+//Example 1.3 line 4...set up choropleth map
 function setMap(){
 
     //map frame dimensions
-    var width = 900,
-        height = 600;
+    var width = window.innerWidth * 0.5,
+        height = 680;
 
     //create new svg container for the map
-    var map = d3.select("body") //select document's body
-        .append("svg") //create and append a new svg element to it
-        .attr("class", "map") //set class attribute match to map
-        .attr("width", width) //give the svg width
-        .attr("height", height); //give the svg height
+    var map = d3.select("body")
+        .append("svg")
+        .attr("class", "map")
+        .attr("width", width)
+        .attr("height", height);
+    
+    // Create the title element
+    var pageTitle = document.createElement("h1");
+    pageTitle.innerHTML = "Endangered Species throughout United States";
+    pageTitle.classList.add("page-title"); // Add a class for styling
+
+    // Create the introduction panel
+    var introductionPanel = document.createElement("div");
+    introductionPanel.innerHTML = "<p>As biodiversity faces unprecedented threats from human activity, climate change, and habitat loss, tracking the status of endangered species across regions is more crucial than ever. Our interactive map and data visualization tool, the Endangered Species Tracker, offers a comprehensive view of the current state of endangered species throughout the United States.This platform is designed to provide educators, conservationists, policymakers, and the public with accurate, up-to-date information on the distribution and status of species that are threatened with extinction. By leveraging data from the U.S. Fish and Wildlife Service along with contributions from various environmental organizations, this tool illustrates how different species are distributed across states, highlighting areas where conservation efforts can be most effectively directed.</p>";
+    introductionPanel.classList.add("introduction-panel"); // Add a class for styling
+
+    // Append the title and introduction panel to the document body
+    document.body.insertBefore(introductionPanel, document.body.firstChild);
+    document.body.insertBefore(pageTitle, introductionPanel);
+
+    var zoom = d3.zoom()
+        .scaleExtent([1,3])
+        .on("zoom", function(e) {
+            map.selectAll("path")
+                .attr("transform", e.transform);
+        });
+    map.call(zoom);
+
+    // Create a search input for states
+    var stateSearch = document.createElement("input");
+    stateSearch.setAttribute("type", "text");
+    stateSearch.setAttribute("id", "stateSearch");
+    stateSearch.setAttribute("placeholder", "Search for a state");
+    document.body.insertBefore(stateSearch, introductionPanel.nextSibling);
+
+    // Create a search button for the search input
+    var searchButton = document.createElement("button");
+    searchButton.innerHTML = "Search";
+    searchButton.setAttribute("id", "searchButton");
+    document.body.insertBefore(searchButton, stateSearch.nextSibling);
+
+
 
     //create Albers equal area conic projection centered on France
-    var projection = d3.geoAlbersUsa()
-        .scale(1000)
+    var projection = d3.geoAlbers()
+        .center([3.64, 50])
+        .rotate([102, 0, 0])
+        .parallels([40, 75])
+        .scale(630)
         .translate([width / 2, height / 2]);
-    
-    var path = d3.geoPath() //path generator
+
+    var path = d3.geoPath()
         .projection(projection);
 
     //use Promise.all to parallelize asynchronous data loading
     var promises = [];    
-    promises.push(d3.csv("data/species_az.csv")); //load attributes from csv    
+    promises.push(d3.csv("data/Species.csv")); //load attributes from csv    
     promises.push(d3.json("data/countries.topojson")); //load background spatial data    
     promises.push(d3.json("data/states.topojson")); //load choropleth spatial data    
     Promise.all(promises).then(callback);
@@ -40,12 +100,26 @@ function setMap(){
         countries = data[1];   
         states = data[2]; 
 
+        console.log(csvData);
+        //console.log(countries.objects);
+        //console.log(states);
+
+        //place graticule on the map
+        setGraticule(map, path);
+
         // Translate TopoJSON to GeoJSON
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
+
+        console.log(worldCountries);
+       
+        //join csv data to GeoJSON enumeration units
+        usStates = joinData(usStates, csvData);
+
+        console.log(usStates);
         
             
-        //add countries to map
+        //add Europe countries to map
         var country = map.append("path")
             .datum(worldCountries)
             .attr("class", "countries")
@@ -57,38 +131,37 @@ function setMap(){
         //add enumeration units to the map
         setEnumerationUnits(usStates, map, path, colorScale);
 
-        
-        // // Event listener for state when mouseover
-        // map.selectAll(".regions") // Select all states on the map
-        //     .data(usStates)
-        //     var selection = map.selectAll(".regions");
-        //     selection.data(usStates);
+
+        // Function to zoom the map to Hawaii
+        function SearchBar(usStates) {
+
+            var stateName = document.getElementById('stateSearch').value;
+            // Assuming Hawaii is in the `usStates` dataset
+            var state = usStates.find(function(d) {
+                return d.properties.name.toLowerCase() === stateName.toLowerCase();
+            });
+
+            if (state) {
+                // Get bounds of Hawaii
+                var bounds = path.bounds(state);
+                var dx = bounds[1][0] - bounds[0][0];
+                var dy = bounds[1][1] - bounds[0][1];
+                var x = (bounds[0][0] + bounds[1][0]) / 2;
+                var y = (bounds[0][1] + bounds[1][1]) / 2;
+                var scale = 2;
+                var translate = [chartInnerWidth / 2 - scale * x, chartInnerHeight / 2 - scale * y];
+
+                // Apply zoom and pan transformation to map
+                map.transition()
+                    .duration(750)
+                    .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+            } else {
+                alert("State not found.");
+            }
+        }
+    
 
 
-        // selection.on("mouseover", function(event,d) {
-        //     var d = d3.select(this).datum(); // This retrieves the data bound to the clicked element.
-        //     console.log("currentState", d);
-        
-        //     if (d && d.properties && d.properties.adm1_code) {
-        //         var currentState = d.properties.adm1_code;
-        //         var speciesInState = csvData.filter(function(row) {
-        //             return row.adm1_code === currentState;
-        //         });
-        //         console.log(currentState);
-        //         displayPopup(event,speciesInState);
-        //     } else {
-        //         console.log("Data or properties are missing from this element");
-        //     }
-        //     event.stopPropagation();
-        //     displayPopup(event,d.properties);
-        // }); 
-        
-        // selection.on("mouseout", function(event,d){
-        //     const popups = document.querySelectorAll('.popup');
-        //                         popups. forEach(popup => {
-        //                             popup.remove();
-        //                         });
-        //});
     };
 };
 
@@ -112,8 +185,34 @@ function setGraticule(map, path){
         .attr("d", path); //project graticule lines
 };
 
+function joinData(usStates, csvData){
+    //loop through csv to assign each set of csv attribute values to geojson region
+    for (var i=0; i<csvData.length; i++){
+        var csvRegion = csvData[i]; //the current region
+        var csvKey = csvRegion.adm1_code; //the CSV primary key
+
+        //loop through geojson regions to find correct region
+        for (var a=0; a<usStates.length; a++){
+
+            var geojsonProps = usStates[a].properties; //the current region geojson properties
+            var geojsonKey = geojsonProps.adm1_code; //the geojson primary key
+
+            //where primary keys match, transfer csv data to geojson properties object
+            if (geojsonKey == csvKey){
+
+                //assign all attributes and values
+                attrArray.forEach(function(attr){
+                    var val = parseFloat(csvRegion[attr]); //get csv attribute value
+                    geojsonProps[attr] = val; //assign attribute and value to geojson properties
+                });
+            };
+        };
+    };
+    return usStates;
+};
+
 function setEnumerationUnits(usStates, map, path, colorScale){
-    //add states to map
+    //add France regions to map
     var state = map.selectAll(".regions")
         .data(usStates)
         .enter()
@@ -130,34 +229,26 @@ function setEnumerationUnits(usStates, map, path, colorScale){
                 return "#ccc";            
             }    
         })
-        .on("click", function(event, d) {
-            var currentStateCode = d.properties.adm1_code; // Assuming 'adm1_code' is how states are identified in your data
-            var speciesInState = csvData.filter(function(row) {
-                return row.adm1_code === currentStateCode;
-            });
-            updatePanel(speciesInState); // Update the panel with filtered species data
-        })
-        .on("mouseover", function(event, d) {
+        .on("mouseover", function(event, d){
             highlight(d.properties);
         })
-        .on("mouseout", function(event, d) {
+        .on("mouseout", function(event, d){
             dehighlight(d.properties);
         })
-        
     var desc = state.append("desc")
         .text('{"stroke": "#000", "stroke-width": "0.5px"}')
 
-    //console.log(state);
+    console.log(state);
 };
  
 //function to create color scale generator
 function makeColorScale(data){
     var colorClasses = [
         "#edf8fb",
-        "#b3cde3",
-        "#8c96c6",
-        "#8856a7",
-        "#810f7c"
+        "#b2e2e2",
+        "#66c2a4",
+        "#2ca25f",
+        "#006d2c"
     ];
 
     //create color scale generator
@@ -177,89 +268,7 @@ function makeColorScale(data){
     return colorScale;
 };
 
-//function to highlight enumeration units and bars
-function highlight(props){
-    //change stroke
-    var selected = d3.selectAll("." + props.adm1_code)
-        .style("stroke", "blue")
-        .style("stroke-width", "2");
-};
-
-//function to reset the element style on mouseout
-function dehighlight(props){
-    var selected = d3.selectAll("." + props.adm1_code)
-        .style("stroke", function(){
-            return getStyle(this, "stroke")
-        })
-        .style("stroke-width", function(){
-            return getStyle(this, "stroke-width")
-        });
-
-    function getStyle(element, styleName){
-        var styleText = d3.select(element)
-            .select("desc")
-            .text();
-
-        var styleObject = JSON.parse(styleText);
-
-        return styleObject[styleName];
-    };
-
-    //remove info label
-    d3.select(".infolabel").remove();
-};
-
-// Function to display a pop-up with species information
-// function displayPopup(event, speciesInState) {
-
-//     // Create a div for the pop-up
-//     var popup = d3.select("body").append("div")
-//         .attr("class", "popup")
-//         .style("display", "block");
-
-//     // Display the scientific names of species in the pop-up
-//     var paragraphs = popup.selectAll("p")
-//         .data(speciesInState)
-//         .enter()
-//         .append("p")
-//         .text(function(d) {
-//             return d["Scientific Name"] ? d["Scientific Name"] : "No scientific name available";
-//         });
-
-//     //console.log("Paragraphs added:", paragraphs.size());
-
-//     // Adjust popup position, adding a bit more space if needed
-//     var xPosition = event.pageX + 10;
-//     var yPosition = event.pageY - 10;
-
-//     popup.style("left", xPosition + "px")
-//         .style("top", yPosition + "px");
-
-//     //console.log("Popup positioned at:", xPosition, yPosition); 
-    
-//     d3.selectAll(".state").on("mouseover", function(event, data) {
-//         const stateId = d3.select(this).attr("id"); // or any other unique identifier
-//        displayPopup(event, data, stateId);
-//    });  
-// }
 
 
-// Function to update the right panel with species information
-function updatePanel(speciesInState) {
-    var panel = d3.select("#right-panel");
-    panel.html("");  // Clear the panel first
-
-    // Append a header
-    panel.append("h3").text("Species in State");
-
-    // Check if species data is available for the clicked state
-    if (speciesInState.length > 0) {
-        speciesInState.forEach(function(species) {
-            panel.append("p").text(species["Scientific Name"] || "No scientific name available");
-        });
-    } else {
-        panel.append("p").text("No species data available for this state.");
-    }
-}
 
 
