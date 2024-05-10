@@ -118,7 +118,7 @@ function setMap(){
         states = data[2]; 
         csvSpecies = data[3];
 
-        console.log(csvData);
+        //console.log(csvData);
         //console.log(countries.objects);
         //console.log(states);
 
@@ -129,12 +129,12 @@ function setMap(){
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
 
-        console.log(worldCountries);
+        //console.log(worldCountries);
        
         //join csv data to GeoJSON enumeration units
         usStates = joinData(usStates, csvData);
 
-        console.log(usStates);
+       // console.log(usStates);
         
             
         //add Europe countries to map
@@ -271,7 +271,7 @@ function setEnumerationUnits(usStates, map, path){
     var desc = state.append("desc")
         .text('{"stroke": "#FFF", "stroke-width": "0.5px"}')
 
-    console.log(state);
+    //console.log(state);
 };
  
 // //function to create color scale generator
@@ -756,4 +756,114 @@ function setupEventListeners() {
        
 }
 
+// Assuming your states are drawn using paths in SVG
+d3.selectAll("path.state").on("click", function(event, d) {
+    // Assuming 'd' contains the state name or you can get it from the clicked element
+    const stateName = d.properties.name;  // Adjust based on your data structure
+    const stateData = filterDataForState(allData, stateName);
+    const percentages = calculatePercentages(stateData);
+    setNestedChart(percentages, "#chart2");
+});
 
+function filterDataForState(data, stateName) {
+    return data.filter(item => item.State === stateName);
+}
+function calculatePercentages(data) {
+    //console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
+
+    // Correctly access the properties, make sure 'S_Group' matches your CSV header
+    const grouped = d3.group(data, d => d.State, d => d.Group);
+
+    const percentages = [];
+    grouped.forEach((groups, state) => {
+        let total = 0;
+        groups.forEach((species, group) => {
+            total += species.length;
+        });
+
+        groups.forEach((species, group) => {
+            percentages.push({
+                State: state,
+                Group: group,
+                Percentage: (species.length / total) * 100
+            });
+        });
+    });
+
+    //console.log("Computed Percentages:", percentages);  // Check the output here
+    return percentages;
+}
+
+
+
+function setNestedChart(data, selector) {
+    
+    // Define dimensions
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const chartWidth = 800 - margin.left - margin.right;
+    const chartHeight = 600 - margin.top - margin.bottom;
+
+    // Select the SVG container and append SVG if it does not exist
+    const svg = d3.select(selector).selectAll("svg").remove();
+    const svgEnter = svg.enter().append("svg");
+    svgEnter.merge(svg)
+        .attr("width", chartWidth + margin.left + margin.right)
+        .attr("height", chartHeight + margin.top + margin.bottom);
+
+    const g = svgEnter.append("g").merge(svg.select("g.chart"))
+        .attr("transform", `translate(${margin.left},${margin.top})`)
+        .attr("class", "chart");
+
+    // Remove existing elements before redrawing
+    g.selectAll("*").remove();
+
+    // Create scales
+    const xScale = d3.scaleBand()
+        .domain(data.map(d => d.State))
+        .rangeRound([0, chartWidth])
+        .paddingInner(0.1);
+
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.Percentage)])
+        .range([chartHeight, 0]);
+
+    // Create axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+    g.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+
+    g.append("g")
+        .call(yAxis);
+
+    // Create bars
+    g.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => xScale(d.State))
+        .attr("y", d => yScale(d.Percentage))
+        .attr("width", xScale.bandwidth())
+        .attr("height", d => chartHeight - yScale(d.Percentage))
+        .attr("fill", "steelblue");
+}
+
+d3.csv("data/species_az.csv").then(data => {
+    const processedData = calculatePercentages(data);
+    setNestedChart(processedData, "#chart2");
+}).catch(error => {
+    console.error("Error loading the data:", error);
+});
+
+
+
+// Binding data specifically to elements within a specific SVG
+//const bars = svg.selectAll('.bar')
+    //.data(data, d => d.id);  // Assuming each data point has a unique 'id' field
