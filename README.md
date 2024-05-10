@@ -23,10 +23,9 @@ Endangered Species in U.S.
        1. Species lists in each state, including detailed information like Scientific Name, Common Name, Status...
        2. Number of species in each group based on states
     3. Overview: Introduction and supplementary text on the background description and user guideline
-    4. Legend: Use different colors to visualize habitats of species of different status and/or family
-    5. Statistics: Create a bar chart displaying the number of endangered species in each state.
+    4. Statistics: Create a bar chart displaying the number of endangered species in each state.
 
- 3. Interaction
+ 2. Interaction
     1. Introduction Panel: Overlay: Show intro info
     2. Query Panel: Filter: By species group.
     3. Chart Toggle: Overlay: Turn on/off the charts showing statistics information; Reexpress: use charts show some information including in the map 
