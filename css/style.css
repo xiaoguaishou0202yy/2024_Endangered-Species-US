@@ -256,3 +256,16 @@ option {
     background-color: #f7f7f7; /* Highlight item on hover */
     cursor: pointer; /* Indicates interactivity */
 }
+
+#tooltip {
+    position: absolute;  
+    visibility: hidden;  
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;  
+    padding:10px;
+    overflow: hidden;  
+    text-overflow: ellipsis;  
+    white-space: nowrap;  
+}

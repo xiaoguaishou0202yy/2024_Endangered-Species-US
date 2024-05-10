@@ -694,13 +694,24 @@ function updatePanel(speciesInState) {
 
 function showTooltip(event, species) {
     let tooltip = d3.select("#tooltip");
-    tooltip.style("visibility", "visible")
-           .style("top", (event.pageY + 10) + "px")
-           .style("left", (event.pageX + 10) + "px")
-           .html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
+    tooltip.html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
                   <strong>Common Name:</strong> ${species["Common Name"]}<br>
                   <strong>Where Listed:</strong> ${species["Where Listed"]}<br>
-                  <strong>ESA Listing Status:</strong> ${species["ESA Listing Status "]}`);
+                  <strong>ESA Listing Status:</strong> ${species["ESA Listing Status "]}`)
+    
+           .style("visibility", "visible")
+           .style("opacity", 0); // Temporarily make it invisible to measure
+
+    // Ensure the DOM has updated to reflect the new content
+    setTimeout(() => {
+        const tooltipWidth = tooltip.node().offsetWidth;
+        const viewportWidth = window.innerWidth;
+        const leftPosition = 0.8 * viewportWidth - tooltipWidth; // Calculate the left position
+
+        tooltip.style("left", `${leftPosition}px`)
+               .style("top", (event.pageY + 10) + "px")
+               .style("opacity", 1); // Make it visible again
+    }, 10);
 }
 
 function hideTooltip() {
