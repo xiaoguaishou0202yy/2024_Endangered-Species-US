@@ -700,7 +700,7 @@ function showTooltip(event, species) {
            .html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
                   <strong>Common Name:</strong> ${species["Common Name"]}<br>
                   <strong>Where Listed:</strong> ${species["Where Listed"]}<br>
-                  <strong>ESA Listing Status:</strong> ${species["ESA Listing Status"]}`);
+                  <strong>ESA Listing Status:</strong> ${species["ESA Listing Status "]}`);
 }
 
 function hideTooltip() {
