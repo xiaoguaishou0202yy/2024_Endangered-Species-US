@@ -63,6 +63,7 @@ body {
 }
 .chart-container {
     flex: 1;                 /* Takes up 1 part of the available space */
+    margin: 20px 0 0 0px;
     /* Additional styling as needed */
 }
 
@@ -78,6 +79,7 @@ body {
 
 
 .chart, .species-list {
+    top: 300px;
     margin-bottom: 20px;
     padding: 10px;
     background-color: white;
@@ -187,8 +189,8 @@ option {
 
 #stateSearch {
     position: absolute;
-    top: 210px;
-    left: 700px;
+
+    left: 10px;
     margin-right: 10px; /* Add some spacing between the input and button */
     padding: 8px;
     border: 1px solid #ccc;
@@ -198,8 +200,8 @@ option {
   
 #searchButton {
     position: absolute;
-    top: 210px;
-    left: 920px;
+
+    left: 240px;
     z-index: 10;
     padding: 8px 12px;
     border: 1px solid #ccc;

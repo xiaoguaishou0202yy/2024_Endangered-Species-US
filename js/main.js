@@ -65,18 +65,20 @@ function setMap(){
 
     map.call(zoom);
 
+    var chartContainer = document.querySelector(".chart-container");
+
     // Create a search input for states
     var stateSearch = document.createElement("input");
     stateSearch.setAttribute("type", "text");
     stateSearch.setAttribute("id", "stateSearch");
     stateSearch.setAttribute("placeholder", "Search for a state");
-    document.body.insertBefore(stateSearch, introductionPanel.nextSibling);
+    chartContainer.appendChild(stateSearch);
 
     // Create a search button for the search input
     var searchButton = document.createElement("button");
     searchButton.innerHTML = "Search";
     searchButton.setAttribute("id", "searchButton");
-    document.body.insertBefore(searchButton, stateSearch.nextSibling);
+    chartContainer.appendChild(searchButton);
 
 
 
@@ -257,7 +259,7 @@ function setEnumerationUnits(usStates, map, path){
         })
         .on("mousemove", moveLabel);
     var desc = state.append("desc")
-        .text('{"stroke": "#000", "stroke-width": "0.5px"}')
+        .text('{"stroke": "#FFF", "stroke-width": "0.5px"}')
 
     console.log(state);
 };
@@ -274,6 +276,7 @@ function makeColorScale(data){
         "#006d2c"
     ];
 
+    
     //create color scale generator
     var colorScale = d3.scaleQuantile()
         .range(colorClasses);
@@ -404,7 +407,7 @@ function setChart(csvData, colorScale){
 //function to create a dropdown menu for attribute selection
 function createDropdown(csvData){
     //add select element
-    var dropdown = d3.select("body")
+    var dropdown = d3.select(".dropdown-container")
         .append("select")
         .attr("class", "dropdown")
         .on("change", function(){
@@ -652,32 +655,33 @@ function updatePanel(speciesInState) {
             if (!groups.has(species.Group)) {
                 groups.set(species.Group, []);
             }
-            groups.get(species.Group).push(species["Scientific Name"]);
+            groups.get(species.Group).push(species);
         }
     });
 
     if (groups.size > 0) {
         groups.forEach((speciesList, group) => {
-            // Container for each group
             let groupContainer = panel.append("div").attr("class", "group-container");
-
-            // Clickable header for each group
             let header = groupContainer.append("p")
                 .text(group)
                 .attr("class", "group-header")
                 .style("cursor", "pointer");
-
-            // Hidden list that will toggle on click
             let list = groupContainer.append("ul")
                 .style("display", "none")
                 .attr("class", "species-list");
 
-            // Append species to the list
             speciesList.forEach(species => {
-                list.append("li").text(species);
+                list.append("li")
+                    .text(species["Scientific Name"])
+                    .attr("class", "species-name")
+                    .on("mouseover", function(event) {
+                        showTooltip(event, species);
+                    })
+                    .on("mouseout", function() {
+                        hideTooltip();
+                    });
             });
 
-            // Toggle display on click
             header.on("click", function() {
                 let isVisible = list.style("display") === "none";
                 list.style("display", isVisible ? "block" : "none");
@@ -686,5 +690,20 @@ function updatePanel(speciesInState) {
     } else {
         panel.append("p").text("No groups available for this state.");
     }
+}
+
+function showTooltip(event, species) {
+    let tooltip = d3.select("#tooltip");
+    tooltip.style("visibility", "visible")
+           .style("top", (event.pageY + 10) + "px")
+           .style("left", (event.pageX + 10) + "px")
+           .html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
+                  <strong>Common Name:</strong> ${species["Common Name"]}<br>
+                  <strong>Where Listed:</strong> ${species["Where Listed"]}<br>
+                  <strong>ESA Listing Status:</strong> ${species["ESA Listing Status"]}`);
+}
+
+function hideTooltip() {
+    d3.select("#tooltip").style("visibility", "hidden");
 }
 
