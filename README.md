@@ -17,7 +17,7 @@ Endangered Species in U.S.
    As the user delves further, they discover a section dedicated to the stories behind the discovery of endangered species. These narratives, enriched with photos, videos, and firsthand accounts, offer a personal look into the lives of the animals and the dedicated individuals who study and protect them. The website facilitates a connection between the user and these distant realities, turning abstract statistics into tangible stories of survival and perseverance. By the end of their visit, the user not only gains a wealth of knowledge on the topic of conservation but also walks away with a renewed sense of responsibility and a desire to contribute to the protection of our planet’s biodiversity. This interactive experience fosters a deeper emotional engagement with environmental conservation, encouraging users to become advocates for endangered species in their own communities.
 ### Requirements Document
  1. Representation
-    1. Basemap: The outline boundary of the United States (state boundary included): natural earth
+    1. Basemap: The outline boundary of the World's Countries and the United States (state boundary included): natural earth
     2. Habitat Endangered Species: The distribution of different endangered species:
        Environmental Conservation Online System:
        USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
