@@ -21,11 +21,8 @@ var yScale = d3.scaleLinear()
    .range([290, 0])
    .domain([0, 500]);
 
-
 //begin script when window loads
 window.onload = setMap();
-
-
 
 //Example 1.3 line 4...set up choropleth map
 function setMap(){
@@ -65,8 +62,6 @@ function setMap(){
 
     map.call(zoom);
 
-
-
     function resetMap() {
         map.transition()
             .duration(750)
@@ -90,8 +85,6 @@ function setMap(){
     searchButton.innerHTML = "Search";
     searchButton.setAttribute("id", "searchButton");
     chartContainer.appendChild(searchButton);
-
-
 
     //create Albers equal area conic projection centered on France
     var projection = d3.geoAlbers()
@@ -135,8 +128,7 @@ function setMap(){
         usStates = joinData(usStates, csvData);
 
        // console.log(usStates);
-        
-            
+          
         //add Europe countries to map
         var country = map.append("path")
             .datum(worldCountries)
@@ -258,7 +250,7 @@ function setEnumerationUnits(usStates, map, path){
             var speciesInState = csvSpecies.filter(function(row) {
                 return row.adm1_code === currentStateCode;
             });
-            var clickedStateName = d.properties.name;  // Adjust based on your data structure
+
             updatePanel(speciesInState, clickedStateName); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d){
@@ -271,11 +263,9 @@ function setEnumerationUnits(usStates, map, path){
     var desc = state.append("desc")
         .text('{"stroke": "#FFF", "stroke-width": "0.5px"}')
 
+
     //console.log(state);
 };
- 
-// //function to create color scale generator
-
 
 function makeColorScale(data){
     var colorClasses = [
@@ -303,10 +293,6 @@ function makeColorScale(data){
 
     return colorScale;
 };
-
-
-// First, create a size scale for the symbols
-
 
 function getSizeScale(csvData) {
     // Create a scale for circle radius
@@ -525,7 +511,6 @@ function changeAttribute(attribute, csvData) {
 
     updateChart(bars, csvData.length, colorScale);
 }; //end of changeAttribute()
-
 
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale){
@@ -756,19 +741,7 @@ function setupEventListeners() {
        
 }
 
-// Assuming your states are drawn using paths in SVG
-d3.selectAll("path.state").on("click", function(event, d) {
-    // Assuming 'd' contains the state name or you can get it from the clicked element
-    const stateName = d.properties.name;  // Adjust based on your data structure
-    const stateData = filterDataForState(allData, stateName);
-    const percentages = calculatePercentages(stateData);
-    setNestedChart(percentages, "#chart2");
-});
-
-function filterDataForState(data, stateName) {
-    return data.filter(item => item.State === stateName);
-}
-function calculatePercentages(data) {
+/*function calculatePercentages(data) {
     //console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
 
     // Correctly access the properties, make sure 'S_Group' matches your CSV header
@@ -790,80 +763,7 @@ function calculatePercentages(data) {
         });
     });
 
-    //console.log("Computed Percentages:", percentages);  // Check the output here
+    console.log("Computed Percentages:", percentages);  // Check the output here
     return percentages;
-}
+}*/
 
-
-
-function setNestedChart(data, selector) {
-    
-    // Define dimensions
-    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
-    const chartWidth = 800 - margin.left - margin.right;
-    const chartHeight = 600 - margin.top - margin.bottom;
-
-    // Select the SVG container and append SVG if it does not exist
-    const svg = d3.select(selector).selectAll("svg").remove();
-    const svgEnter = svg.enter().append("svg");
-    svgEnter.merge(svg)
-        .attr("width", chartWidth + margin.left + margin.right)
-        .attr("height", chartHeight + margin.top + margin.bottom);
-
-    const g = svgEnter.append("g").merge(svg.select("g.chart"))
-        .attr("transform", `translate(${margin.left},${margin.top})`)
-        .attr("class", "chart");
-
-    // Remove existing elements before redrawing
-    g.selectAll("*").remove();
-
-    // Create scales
-    const xScale = d3.scaleBand()
-        .domain(data.map(d => d.State))
-        .rangeRound([0, chartWidth])
-        .paddingInner(0.1);
-
-    const yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.Percentage)])
-        .range([chartHeight, 0]);
-
-    // Create axes
-    const xAxis = d3.axisBottom(xScale);
-    const yAxis = d3.axisLeft(yScale);
-
-    g.append("g")
-        .attr("transform", `translate(0,${chartHeight})`)
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
-
-    g.append("g")
-        .call(yAxis);
-
-    // Create bars
-    g.selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", d => xScale(d.State))
-        .attr("y", d => yScale(d.Percentage))
-        .attr("width", xScale.bandwidth())
-        .attr("height", d => chartHeight - yScale(d.Percentage))
-        .attr("fill", "steelblue");
-}
-
-d3.csv("data/species_az.csv").then(data => {
-    const processedData = calculatePercentages(data);
-    setNestedChart(processedData, "#chart2");
-}).catch(error => {
-    console.error("Error loading the data:", error);
-});
-
-
-
-// Binding data specifically to elements within a specific SVG
-//const bars = svg.selectAll('.bar')
-    //.data(data, d => d.id);  // Assuming each data point has a unique 'id' field

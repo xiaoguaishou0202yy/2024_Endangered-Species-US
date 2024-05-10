@@ -23,7 +23,6 @@ body {
     fill: #F5F5F5;
 }
 
-/*#D5E3FF*/
 
 .gratLines {
     fill: none;
@@ -36,9 +35,6 @@ body {
     stroke-width: 0.5px;
     stroke-linecap: round;
 }
-
-
-
 
 .dropdown {
     position: absolute;
@@ -70,7 +66,6 @@ body {
 
 .map-container {
     flex: 2;                 /* Takes up 2 parts of the available space, making it larger than the chart */
-    /* Additional styling as needed */
 }
 
 #map {
@@ -112,13 +107,10 @@ body {
     margin: 20px 20px 0 0;
 }
 
-
-
 .chartTitle {
     font-size: 1.1em;
     font-weight: bold;
 }
-
 
 .chartFrame {
     fill: none;
@@ -140,23 +132,6 @@ body {
     font-size: 0.8em;
     fill: #999;
 }
-
-/*#map, #Nestedchart {
-    width: 50%;
-    height: 500px;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.Nestedchart {
-    position: relative;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}*/
-
-/* Additional styles for responsiveness and aesthetics may be required */
 
 option {
     font-weight: normal;
@@ -181,8 +156,6 @@ option {
     padding: 5px 10px;
     top: -75px;
 }
-
-
 
 /* Style for the page title */
 .page-title {
@@ -234,8 +207,6 @@ option {
     margin: 20px 20px 40px 0px;
 }
 
-
-
 #stateSearch {
     position: absolute;
 
@@ -260,8 +231,6 @@ option {
     font-size: 16px;
     cursor: pointer;
 }
-
-
 
 #searchButton:hover {
     background-color: rgb(35, 121, 52); /* Darker blue color on hover */
