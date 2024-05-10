@@ -18,17 +18,13 @@ Endangered Species in U.S.
 ### Requirements Document
  1. Representation
     1. Basemap: The outline boundary of the World's Countries and the United States (state boundary included): natural earth
-    2. Listed species with spatial current range believed to or known to occur in each State: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed
+    2. Listed species with spatial current range believed to or known to occur in each state: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed     
        Organize this data into two CSV files:
        1. Species lists in each state, including detailed information like Scientific Name, Common Name, Status...
        2. Number of species in each group based on states
        
     4.
-    5. The distribution of different endangered species:
-    6. 
-       Environmental Conservation Online System:
-       USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
-       Current Range of All Species: https://ecos.fws.gov/ecp/species/2776          
+      
     7. Overview: Introduction and supplementary text on the background description and user guideline
     8. Legend: Use different colors to visualize habitats of species of different status and/or family
     9. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
@@ -40,9 +36,13 @@ Endangered Species in U.S.
     4. Search Widget: Search: Search for the area of interest
     5. Popup: Retrieve: Show more information about the species in a area
 
-*Other Reference:*
-Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533;     
+*Other Reference:*   
+     
+Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533 
+     
+Endangered species habitats:      
 The distribution of different endangered species: USFWS Threatened & Endangered Species Active Critical Habitat Report from Environmental Conservation Online System: https://ecos.fws.gov/ecp/report/critical-habitat;
+Current Range of All Species: https://ecos.fws.gov/ecp/species/2776   
    
 
 
