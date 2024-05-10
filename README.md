@@ -18,14 +18,21 @@ Endangered Species in U.S.
 ### Requirements Document
  1. Representation
     1. Basemap: The outline boundary of the World's Countries and the United States (state boundary included): natural earth
-    2. Habitat Endangered Species: The distribution of different endangered species:
+    2. Listed species with spatial current range believed to or known to occur in each State: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed
+       Organize this data into two CSV files:
+       1. Species lists in each state, including detailed information like Scientific Name, Common Name, Status...
+       2. Number of species in each group based on states
+       
+    4.
+    5. The distribution of different endangered species:
+    6. 
        Environmental Conservation Online System:
        USFWS Threatened & Endangered Species Active Critical Habitat Report: https://ecos.fws.gov/ecp/report/critical-habitat;
        Current Range of All Species: https://ecos.fws.gov/ecp/species/2776          
-    3. Overview: Introduction and supplementary text on the background description and user guideline
-    4. Legend: Use different colors to visualize habitats of species of different status and/or family
-    5. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
-    6. Pictures: Design the user interface and add some pictures of specific endangered species
+    7. Overview: Introduction and supplementary text on the background description and user guideline
+    8. Legend: Use different colors to visualize habitats of species of different status and/or family
+    9. Statistics: Display statistics in the form of charts such as bar charts, pie charts, etc: https://ecos.fws.gov/ecp/report/boxscore
+    10. Pictures: Design the user interface and add some pictures of specific endangered species
  3. Interaction
     1. Introduction Panel: Overlay: Show intro info
     2. Query Panel: Filter: Status and Family.
@@ -33,9 +40,10 @@ Endangered Species in U.S.
     4. Search Widget: Search: Search for the area of interest
     5. Popup: Retrieve: Show more information about the species in a area
 
-*Reference:*
-Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533
-   State's csv: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed 
+*Other Reference:*
+Examples of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533;     
+The distribution of different endangered species: USFWS Threatened & Endangered Species Active Critical Habitat Report from Environmental Conservation Online System: https://ecos.fws.gov/ecp/report/critical-habitat;
+   
 
 
 ### Wireframes
