@@ -94,7 +94,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
-    bottom: 230px;
+    bottom: 200px;
 }
 
 .species-list {
@@ -132,6 +132,20 @@ body {
     font-size: 0.8em;
     fill: #999;
 }
+
+#chartDescription {
+    width: 100%; /* Adjust width as necessary */
+    padding: 300px;
+    background-color: #f4f4f4; /* Light grey background for better readability */
+    border-top: 1px solid #ccc; /* Adds a line between the chart and description */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds subtle shadow for depth */
+    margin-top: 10px; /* Ensures there is a space between the chart and the description */
+    font-size: 14px;
+    color: #333;
+    text-align: center; /* Centers the text */
+    bottom: 300px;
+}
+
 
 option {
     font-weight: normal;
@@ -232,8 +246,11 @@ option {
     cursor: pointer;
 }
 
-#searchButton:hover {
-    background-color: rgb(35, 121, 52); /* Darker blue color on hover */
+
+#searchDescription {
+    background-color: rgb(35, 121, 52);
+    
+
 }
 
 #right-panel {

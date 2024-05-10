@@ -86,6 +86,34 @@ function setMap(){
     searchButton.setAttribute("id", "searchButton");
     chartContainer.appendChild(searchButton);
 
+    // Create a custom tooltip element
+    var tooltip = document.createElement("div");
+    tooltip.setAttribute("id", "searchTooltip");
+    tooltip.innerHTML = "Use the search bar to enter the name of a state.<br>Click the 'Search' button to zoom into the selected state on the map and view detailed information about the endangered species in that area.";
+    tooltip.style.visibility = "hidden"; // Start hidden
+    tooltip.style.position = "absolute";
+    tooltip.style.backgroundColor = "#f8f9fa";
+    tooltip.style.border = "1px solid #ccc";
+    tooltip.style.padding = "5px";
+    tooltip.style.borderRadius = "4px";
+    tooltip.style.whiteSpace = "pre-line"; // Ensures that text formatting and line breaks are respected
+    chartContainer.appendChild(tooltip);
+    
+    // Event listeners to show and hide the tooltip
+    stateSearch.addEventListener("mouseover", function(event) {
+        tooltip.style.visibility = "visible";
+        tooltip.style.left = event.pageX + 10 + 'px'; // Positioning tooltip
+        tooltip.style.top = event.pageY + 10 + 'px';
+    });
+    stateSearch.addEventListener("mouseout", function() {
+        tooltip.style.visibility = "hidden";
+    });
+
+     // Create a description element for the bar chart
+    var chartDescription = document.createElement("p");
+    chartDescription.innerHTML = "This bar chart displays the total number of endangered species recorded in each state. The bars are ordered from the state with the highest number to the state with the lowest, providing a clear visual representation of state-by-state comparisons.";
+    chartContainer.appendChild(chartDescription); // Append the description below the chart
+
     //create Albers equal area conic projection centered on France
     var projection = d3.geoAlbers()
         .center([3.64, 41])
@@ -269,14 +297,9 @@ function setEnumerationUnits(usStates, map, path){
 
 function makeColorScale(data){
     var colorClasses = [
-        "#edf8fb",
-        "#b2e2e2",
-        "#66c2a4",
-        "#2ca25f",
         "#006d2c"
     ];
 
-    
     //create color scale generator
     var colorScale = d3.scaleQuantile()
         .range(colorClasses);
@@ -389,6 +412,7 @@ function setChart(csvData, colorScale){
         .attr("width", chartInnerWidth)
         .attr("height", chartInnerHeight)
         .attr("transform", translate);
+        
 
     //set bar positions, heights, and colors
     updateChart(bars, csvData.length, colorScale);
