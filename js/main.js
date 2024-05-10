@@ -84,10 +84,10 @@ function setMap(){
 
     //create Albers equal area conic projection centered on France
     var projection = d3.geoAlbers()
-        .center([3.64, 50])
+        .center([3.64, 41])
         .rotate([102, 0, 0])
         .parallels([40, 75])
-        .scale(630)
+        .scale(1070)
         .translate([width / 2, height / 2]);
 
     var path = d3.geoPath()
@@ -162,16 +162,14 @@ function setMap(){
             });
 
             if (state) {
-                // Get bounds of Hawaii
-                var bounds = path.bounds(state);
-                var dx = bounds[1][0] - bounds[0][0];
-                var dy = bounds[1][1] - bounds[0][1];
-                var x = (bounds[0][0] + bounds[1][0]) / 2;
-                var y = (bounds[0][1] + bounds[1][1]) / 2;
-                var scale = 2;
-                var translate = [chartInnerWidth / 2 - scale * x, chartInnerHeight / 2 - scale * y];
-
-                // Apply zoom and pan transformation to map
+                var bounds = path.bounds(state),
+                    dx = bounds[1][0] - bounds[0][0],
+                    dy = bounds[1][1] - bounds[0][1],
+                    x = (bounds[0][0] + bounds[1][0]) / 2,
+                    y = (bounds[0][1] + bounds[1][1]) / 2,
+                    scale=2,//scale = 0.9 / Math.max(dx / width, dy / height),
+                    translate = [width / 2 - scale * x, height / 2 - scale * y];
+            
                 map.transition()
                     .duration(750)
                     .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
@@ -249,7 +247,8 @@ function setEnumerationUnits(usStates, map, path){
             var speciesInState = csvSpecies.filter(function(row) {
                 return row.adm1_code === currentStateCode;
             });
-            updatePanel(speciesInState); // Update the panel with filtered species data
+            var clickedStateName = d.properties.name;  // Adjust based on your data structure
+            updatePanel(speciesInState, clickedStateName); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d){
             highlight(d.properties);
@@ -496,6 +495,7 @@ function changeAttribute(attribute, csvData) {
     //     });
 
     // Resize proportional symbols
+
     d3.selectAll(".symbol")
         .transition()
         .duration(1000)
@@ -640,12 +640,12 @@ function moveLabel(){
 };
 
 
-function updatePanel(speciesInState) {
+function updatePanel(speciesInState,stateName) {
     var panel = d3.select("#right-panel");
     panel.html("");  // Clear the panel first
 
     // Append a header
-    panel.append("h3").text("Species Groups in State");
+    panel.append("h3").text("Species Groups in "+stateName);
 
     // Collect unique groups
     let groups = new Map();
