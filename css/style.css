@@ -73,9 +73,22 @@ body {
     /* Additional styling as needed */
 }
 
-.map {
-    /*border: medium solid #999;*/
+#map {
+    position:relative;/*border: medium solid #999;*/
     margin: 20px 0 0 0px;
+}
+
+#resetMap {
+    position:absolute;
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+#resetMap:hover {
+    background-color: #e9ecef;
 }
 
 
@@ -290,3 +303,4 @@ option {
     white-space: normal; 
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
+

@@ -65,6 +65,17 @@ function setMap(){
 
     map.call(zoom);
 
+
+
+    function resetMap() {
+        map.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity);  // Reset to original scale and translation
+    }
+    
+    // Add event listener to the reset button
+    document.getElementById('resetMap').addEventListener('click', resetMap);
+
     var chartContainer = document.querySelector(".chart-container");
 
     // Create a search input for states
@@ -177,7 +188,7 @@ function setMap(){
                 alert("State not found.");
             }
         }
-    
+   
 
 
     };
