@@ -157,18 +157,18 @@ option {
     margin: 0 20px 0 0;
     padding: 0;
     display: inline-block;
-    line-height: 1em;
+    line-height: 1.2em;
 }
 
 .infolabel {    
-    margin: 0 20px 0 0;    
+    margin: 0 20px 0 10px;    
     position: absolute;
-    height: 50px;
+    height: 56px;
     min-width: 100px;
     color: #fff;
-    background-color: #000;
+    background-color: #000000;
     border: solid thin #fff;
-    padding: 5px 10px;
+    padding: 6px 10px;
     top: -75px;
 }
 
@@ -254,7 +254,7 @@ option {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 10px;
-    background-color: rgb(35, 121, 52); /* Blue color for the button */
+    background-color: #0da982;/*rgb(35, 121, 52); /* Blue color for the button */
     color: #fff; /* White text color */
     font-size: 16px;
     cursor: pointer;
@@ -283,9 +283,9 @@ option {
 .group-header {
     margin-top: 20px;
     font-weight: bold;
-    background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+    background: linear-gradient(145deg, #f5f5f5, #bae5d9);
     padding: 5px 15px;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow for depth */
 }
 

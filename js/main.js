@@ -272,9 +272,11 @@ function setEnumerationUnits(usStates, map, path){
             updatePanel(speciesInState, clickedStateName); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d){
+            console.log(d);
             highlight(d.properties);
         })
         .on("mouseout", function(event, d){
+
             dehighlight(d.properties);
         })
         .on("mousemove", moveLabel);
@@ -288,7 +290,7 @@ function setEnumerationUnits(usStates, map, path){
 
 
 function makeColorScale(data){
-    var colorClasses = ["#006d2c"];
+    var colorClasses = ["#0da982"]; //#006d2c
 
     //create color scale generator
     var colorScale = d3.scaleQuantile()
@@ -370,6 +372,7 @@ function setChart(csvData, colorScale){
         })
         .attr("width", chartWidth / csvData.length - 1)
         .on("mouseover", function(event, d){
+            
             highlight(d);
         })
         .on("mouseout", function(event, d){
@@ -701,10 +704,7 @@ function updatePanel(speciesInState,stateName) {
 
 function showTooltip(event, species) {
     let tooltip = d3.select("#tooltip");
-    if (!tooltip.node()) {
-        console.error("Tooltip element not found!");
-        return; // Exit the function if tooltip isn't found
-    }
+
     tooltip.html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
                   <strong>Common Name:</strong> ${species["Common Name"]}<br>
                   <strong>Where Listed:</strong> ${species["Where Listed"]}<br>
