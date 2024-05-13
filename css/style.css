@@ -340,3 +340,24 @@ option {
     display: block;
 }
 
+/* styles.css */
+#initialPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1000; /* Ensure it's above all other content */
+}
+
+#initialPage .content {
+    max-width: 600px;
+    padding: 20px;
+}
+

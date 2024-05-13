@@ -756,6 +756,13 @@ function setupEventListeners() {
        
 }
 
+function continueToMap() {
+    var initialPage = document.getElementById('initialPage');
+
+    // Hide the initial page
+    initialPage.style.display = 'none';
+}
+
 
 /*function calculatePercentages(data) {
     //console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
