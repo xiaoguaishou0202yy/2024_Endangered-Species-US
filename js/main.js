@@ -701,6 +701,10 @@ function updatePanel(speciesInState,stateName) {
 
 function showTooltip(event, species) {
     let tooltip = d3.select("#tooltip");
+    if (!tooltip.node()) {
+        console.error("Tooltip element not found!");
+        return; // Exit the function if tooltip isn't found
+    }
     tooltip.html(`<strong>Scientific Name:</strong> ${species["Scientific Name"]}<br>
                   <strong>Common Name:</strong> ${species["Common Name"]}<br>
                   <strong>Where Listed:</strong> ${species["Where Listed"]}<br>
