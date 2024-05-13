@@ -21,8 +21,11 @@ var yScale = d3.scaleLinear()
    .range([290, 0])
    .domain([0, 500]);
 
+
 //begin script when window loads
 window.onload = setMap();
+
+
 
 //Example 1.3 line 4...set up choropleth map
 function setMap(){
@@ -62,6 +65,8 @@ function setMap(){
 
     map.call(zoom);
 
+
+
     function resetMap() {
         map.transition()
             .duration(750)
@@ -86,33 +91,7 @@ function setMap(){
     searchButton.setAttribute("id", "searchButton");
     chartContainer.appendChild(searchButton);
 
-    // Create a custom tooltip element
-    var tooltip = document.createElement("div");
-    tooltip.setAttribute("id", "searchTooltip");
-    tooltip.innerHTML = "Use the search bar to enter the name of a state.<br>Click the 'Search' button to zoom into the selected state on the map and view detailed information about the endangered species in that area.";
-    tooltip.style.visibility = "hidden"; // Start hidden
-    tooltip.style.position = "absolute";
-    tooltip.style.backgroundColor = "#f8f9fa";
-    tooltip.style.border = "1px solid #ccc";
-    tooltip.style.padding = "5px";
-    tooltip.style.borderRadius = "4px";
-    tooltip.style.whiteSpace = "pre-line"; // Ensures that text formatting and line breaks are respected
-    chartContainer.appendChild(tooltip);
-    
-    // Event listeners to show and hide the tooltip
-    stateSearch.addEventListener("mouseover", function(event) {
-        tooltip.style.visibility = "visible";
-        tooltip.style.left = event.pageX + 10 + 'px'; // Positioning tooltip
-        tooltip.style.top = event.pageY + 10 + 'px';
-    });
-    stateSearch.addEventListener("mouseout", function() {
-        tooltip.style.visibility = "hidden";
-    });
 
-     // Create a description element for the bar chart
-    var chartDescription = document.createElement("p");
-    chartDescription.innerHTML = "This bar chart displays the total number of endangered species recorded in each state. The bars are ordered from the state with the highest number to the state with the lowest, providing a clear visual representation of state-by-state comparisons.";
-    chartContainer.appendChild(chartDescription); // Append the description below the chart
 
     //create Albers equal area conic projection centered on France
     var projection = d3.geoAlbers()
@@ -139,7 +118,7 @@ function setMap(){
         states = data[2]; 
         csvSpecies = data[3];
 
-        //console.log(csvData);
+        console.log(csvData);
         //console.log(countries.objects);
         //console.log(states);
 
@@ -150,13 +129,14 @@ function setMap(){
         var worldCountries = topojson.feature(countries, countries.objects.world_administrative_boundaries),
             usStates = topojson.feature(states, states.objects.ne_110m_admin_1_states_provinces).features;
 
-        //console.log(worldCountries);
+        console.log(worldCountries);
        
         //join csv data to GeoJSON enumeration units
         usStates = joinData(usStates, csvData);
 
-       // console.log(usStates);
-          
+        console.log(usStates);
+        
+            
         //add Europe countries to map
         var country = map.append("path")
             .datum(worldCountries)
@@ -278,7 +258,7 @@ function setEnumerationUnits(usStates, map, path){
             var speciesInState = csvSpecies.filter(function(row) {
                 return row.adm1_code === currentStateCode;
             });
-
+            var clickedStateName = d.properties.name;  // Adjust based on your data structure
             updatePanel(speciesInState, clickedStateName); // Update the panel with filtered species data
         })
         .on("mouseover", function(event, d){
@@ -291,15 +271,22 @@ function setEnumerationUnits(usStates, map, path){
     var desc = state.append("desc")
         .text('{"stroke": "#FFF", "stroke-width": "0.5px"}')
 
-
-    //console.log(state);
+    console.log(state);
 };
+ 
+// //function to create color scale generator
+
 
 function makeColorScale(data){
     var colorClasses = [
+        "#edf8fb",
+        "#b2e2e2",
+        "#66c2a4",
+        "#2ca25f",
         "#006d2c"
     ];
 
+    
     //create color scale generator
     var colorScale = d3.scaleQuantile()
         .range(colorClasses);
@@ -316,6 +303,10 @@ function makeColorScale(data){
 
     return colorScale;
 };
+
+
+// First, create a size scale for the symbols
+
 
 function getSizeScale(csvData) {
     // Create a scale for circle radius
@@ -412,7 +403,6 @@ function setChart(csvData, colorScale){
         .attr("width", chartInnerWidth)
         .attr("height", chartInnerHeight)
         .attr("transform", translate);
-        
 
     //set bar positions, heights, and colors
     updateChart(bars, csvData.length, colorScale);
@@ -535,6 +525,7 @@ function changeAttribute(attribute, csvData) {
 
     updateChart(bars, csvData.length, colorScale);
 }; //end of changeAttribute()
+
 
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale){
@@ -764,6 +755,7 @@ function setupEventListeners() {
     });
        
 }
+
 
 /*function calculatePercentages(data) {
     //console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
