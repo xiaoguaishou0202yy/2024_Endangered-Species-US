@@ -21,13 +21,19 @@ var yScale = d3.scaleLinear()
    .range([290, 0])
    .domain([0, 500]);
 
+function addToolDescription() {
+    var descContainer = document.getElementById("toolDescriptionContainer");
+    descContainer.innerHTML = '<p>This map designed by Zhiyi Li and Xun Gong</p>';
+    descContainer.classList.add("tool-description"); // Add a class for CSS styling
+}
 
-//begin script when window loads
-window.onload = setMap();
+// Call this function in your window.onload or wherever it makes sense in your existing code
+window.onload = function() {
+    setMap();
+    addToolDescription();
+};
 
-
-
-//Example 1.3 line 4...set up choropleth map
+//set up choropleth map
 function setMap(){
 
     //map frame dimensions
@@ -51,6 +57,9 @@ function setMap(){
     introductionPanel.innerHTML = "<p>As biodiversity faces unprecedented threats from human activity, climate change, and habitat loss, tracking the status of endangered species across regions is more crucial than ever. Our interactive map and data visualization tool, the Endangered Species Tracker, offers a comprehensive view of the current state of endangered species throughout the United States.This platform is designed to provide educators, conservationists, policymakers, and the public with accurate, up-to-date information on the distribution and status of species that are threatened with extinction. By leveraging data from the U.S. Fish and Wildlife Service along with contributions from various environmental organizations, this tool illustrates how different species are distributed across states, highlighting areas where conservation efforts can be most effectively directed.</p>";
     introductionPanel.classList.add("introduction-panel"); // Add a class for styling
 
+   
+
+    
     // Append the title and introduction panel to the document body
     document.body.insertBefore(introductionPanel, document.body.firstChild);
     document.body.insertBefore(pageTitle, introductionPanel);
@@ -161,6 +170,7 @@ function setMap(){
         searchButton.addEventListener("click", function() {
             SearchBar(usStates);
         });
+        
 
 
         // Function to zoom the map to Hawaii
@@ -278,15 +288,8 @@ function setEnumerationUnits(usStates, map, path){
 
 
 function makeColorScale(data){
-    var colorClasses = [
-        "#edf8fb",
-        "#b2e2e2",
-        "#66c2a4",
-        "#2ca25f",
-        "#006d2c"
-    ];
+    var colorClasses = ["#006d2c"];
 
-    
     //create color scale generator
     var colorScale = d3.scaleQuantile()
         .range(colorClasses);
@@ -304,10 +307,7 @@ function makeColorScale(data){
     return colorScale;
 };
 
-
 // First, create a size scale for the symbols
-
-
 function getSizeScale(csvData) {
     // Create a scale for circle radius
     var size = d3.scaleSqrt()
@@ -763,9 +763,8 @@ function continueToMap() {
     initialPage.style.display = 'none';
 }
 
-
-/*function calculatePercentages(data) {
-    //console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
+function calculatePercentages(data) {
+    console.log("Sample data for verification:", data.slice(0, 1));  // Check the structure of input data
 
     // Correctly access the properties, make sure 'S_Group' matches your CSV header
     const grouped = d3.group(data, d => d.State, d => d.Group);
@@ -788,5 +787,5 @@ function continueToMap() {
 
     console.log("Computed Percentages:", percentages);  // Check the output here
     return percentages;
-}*/
+}
 
