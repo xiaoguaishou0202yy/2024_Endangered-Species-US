@@ -45,7 +45,8 @@ In an educational session, Alex Morgan introduces his middle school class to the
 
 
 ### Wireframes
-![919539858baaa18fa05f01ad9c1bf88](https://github.com/xiaoguaishou0202yy/2024_Endangered-Species-US/assets/158022313/0103f4fb-812a-44c4-91c3-92c1a17a98b2)
+![eed7b38198d62beeaa89345db734eaf](https://github.com/user-attachments/assets/7e81147e-10dd-4446-a18c-ab3cb747fd01)
+
 
 
 
