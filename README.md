@@ -16,7 +16,7 @@ Upon launching the Endangered Species Tracker, Alex Morgan, an environmental edu
 **Scenario #2:**
 In an educational session, Alex Morgan introduces his middle school class to the study of lichens using the Endangered Species Tracker, displayed on a smartboard. Starting with the main interface, Alex guides the students to select "Lichens" from the "Select Attribute" dropdown menu, which **<ins>filters</ins>** the map to focus solely on the data relevant to lichens. This **<ins>filtering</ins>** allows for more targeted exploration of biodiversity, simplifies the visual information and focuses the discussion on this particular species group. The class observes that states like Oregon, located in the northwestern part of the United States, have higher **<ins>concertrations</ins>** of endangered lichens, as indicated by the "Number of Lichens in each state" bar chart that updates dynamically. Alex then encourages the students to delve deeper into the specifics of lichen species by clicking on states with notable lichen populations, as shown on the map. This interaction reveals **<ins>detailed</ins>** information about each lichen species, including their conservation status and the particular threats they face, all displayed in the right panel. To foster a more interactive session, he divides the students into small groups, assigning each group a different state to research the specific endangered lichen species found there. In the next class, the groups share their findings, discussing potential conservation actions that could help preserve lichen species in their respective states. The session concludes with a class-wide discussion on the broader implications of species conservation, exploring how the preservation of a less-known group like lichens can impact biodiversity and ecological health on a national level. 
 ### Requirements Document
- 1. Representation
+**1. Representation**
     1. Basemap: The outline boundary of the World's Countries and the United States (state boundary included): Natural Earth
     2. Listed species with spatial current range believed to or known to occur in each state: https://ecos.fws.gov/ecp/report/species-listings-by-state-totals?statusCategory=Listed     
        Organize this data into two CSV files:
@@ -25,7 +25,7 @@ In an educational session, Alex Morgan introduces his middle school class to the
     3. Overview: Introduction and supplementary text on the background description and user guideline
     4. Statistics: Create a bar chart displaying the number of endangered species in each state.
 
- 2. Interaction
+**2. Interaction**
     1. Introduction Panel: Overlay: Show intro info
     2. Query Panel: Filter: By species group.
     3. Chart Toggle: Overlay: Turn on/off the charts showing statistics information; Reexpress: use charts show some information including in the map 
@@ -33,7 +33,7 @@ In an educational session, Alex Morgan introduces his middle school class to the
     5. Information Panel: Retrieve: Show more information about the species when clicking on a specific state
     6. Map Operations: Zoom: Flexible for zooming; click on the reset button to reset the map; Pan: Flexible for paning; click on the reset button to reset the map
 
-*Other Reference:*  
+***Other Reference:***  
      
 *Interactive map example of related topics: https://center.maps.arcgis.com/apps/webappviewer/index.html?id=def877f10b304220beab7ee8b19f1533* 
      
